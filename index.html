@@ -1,44 +1,161 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style/style.css">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Universidade</title>
+  <link rel="stylesheet" href="style/main.css">
 </head>
 <body>
-    <nav class="nav-bar">
-        <h2>University management</h2>
-        <a href="">Dashboard</a>
-        <h3>Menu</h3>
 
-        <ul class="menu-ul">
-                <a href="">Cursos</a><br>
-                <a href="">Alunos</a><br>
-                <a href="">Professores</a><br>
-                <a href="">Turmas</a><br>
-        </ul>
+<div class="sidebar">
+  <h2>UniSystem</h2>
+  <a class="active">Dashboard</a>
+  <h3>Gestão Universitária</h3>
+  <a>Cursos</a>
+  <a>Alunos</a>
+  <a>Professores</a>
+  <a>Turmas</a>
+  <a>Disciplinas</a>
+  <a>Departamentos</a>
+</div>
 
+<div class="main">
 
-        <h3>Administração</h3>
-        <ul class="adm-ul">
-            <a href="">Funcionários</a><br>
-            <a href="">Usuários</a><br> 
-        </ul>
+  <div class="top-header">
+    <div>Administrador</div>
+  </div>
 
-        <footer>
-            <ul>
-                <li><a href="">Configs</a></li>
-                <li><a href="">Sair</a></li>
-            </ul>
-            <a href="">Configs</a>
-            <a href="">Sair</a>
-        </footer>
+  <div class="content">
 
-    </nav>
-    
-    <div>
-        <h2>Hello admin</h2>
+    <div class="welcome">
+      <h2>Bem vindo(a), Administrador(a)!</h2>
+      <p>Bem vindo ao sistema de gestão de universidade.</p>
     </div>
+
+    <div class="cards">
+      <div class="card">
+        <div class="icon"><img src="icons/cursos.png" alt="Cursos"></div>
+        <div><strong>12</strong><br>Cursos cadastrados</div>
+      </div>
+
+      <div class="card">
+        <div class="icon"><img src="icons/aluno.png" alt="Alunos"></div>
+        <div><strong>200</strong><br>Alunos cadastrados</div>
+      </div>
+
+      <div class="card">
+        <div class="icon"><img src="icons/professor.png" alt="Professores"></div>
+        <div><strong>40</strong><br>Professores cadastrados</div>
+      </div>
+
+      <div class="card">
+        <div class="icon"><img src="icons/turma.png" alt="Turmas"></div>
+        <div><strong>50</strong><br>Turmas cadastradas</div>
+      </div>
+
+      <div class="card">
+        <div class="icon"><img src="icons/disciplina.png" alt="Disciplinas"></div>
+        <div><strong>40</strong><br>Disciplinas cadastradas</div>
+      </div>
+    </div>
+
+    <div class="tables">
+
+      <div class="table-card">
+        <h3>Turmas em andamento</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Turma</th>
+              <th>Curso</th>
+              <th>Disciplina</th>
+              <th>Professor</th>
+              <th>Sala</th>
+              <th>Horário</th>
+            </tr>
+          </thead>
+          <tbody id="tabela-turmas">
+            <tr><td colspan="6" class="empty">Nenhuma turma em andamento</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="table-card">
+        <h3>Matrículas recentes</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Aluno</th>
+              <th>Curso</th>
+              <th>Disciplina</th>
+              <th>Professor</th>
+              <th>Sala</th>
+              <th>Horário</th>
+            </tr>
+          </thead>
+          <tbody id="tabela-alunos">
+            <tr><td colspan="6" class="empty">Nenhuma matrícula encontrada</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+
+    
+    <div class="bottom">
+
+      <div class="actions-card">
+        <h3>Ações rápidas</h3>
+        <div class="actions-grid">
+
+          <div class="action">
+            <img src="icons/add-aluno.png" alt="Novo aluno">
+            <div>Novo aluno</div>
+          </div>
+
+          <div class="action">
+            <img src="icons/add-professor.png" alt="Novo professor">
+            <div>Novo professor</div>
+          </div>
+
+          <div class="action">
+            <img src="icons/add-matricula.png" alt="Nova matrícula">
+            <div>Nova matrícula</div>
+          </div>
+
+          <div class="action">
+            <img src="icons/add-turma.png" alt="Nova turma">
+            <div>Nova turma</div>
+          </div>
+
+          <div class="action">
+            <img src="icons/add-disciplina.png" alt="Nova disciplina">
+            <div>Nova disciplina</div>
+          </div>
+
+          <div class="action">
+            <img src="icons/add-curso.png" alt="Novo curso">
+            <div>Novo curso</div>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="departments">
+        <h3>Departamentos</h3>
+        <p>Ciências Humanas e Sociais</p>
+        <p>Ciências Exatas e Tecnológicas</p>
+        <p>Ciências da Saúde</p>
+        <p>Ciências Sociais Aplicadas</p>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<script src="js/script.js"></script>
 </body>
 </html>
