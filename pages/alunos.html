@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alunos - UniSystem</title>
+  <link rel="stylesheet" href="../style/main.css">
+</head>
+<body>
+
+
+<div id="sidebar-container"></div>
+<script src="../js/loadComponents.js"></script>
+
+<div class="main">
+  
+    <div class="top-header">
+        <div>Administrador</div>
+    </div>
+
+  
+  <div class="content">
+
+    <div>
+        <h2>Gestão de Alunos</h2>
+        <p>Gerenciamento de alunos na universidade</p>
+    </div>
+
+    <div class="op-alunos">
+        <button class="bt-cad-aluno">Cadastrar Aluno</button>
+            <div class="dropdown">
+
+        <select class="filter" name="curso" id="cursoDropdown">
+            <option value="">Filtrar por curso</option>
+
+        </select>
+
+        <select name="turma" id="turmaDropdown">
+            <option value="">Filtrar por turma</option>
+
+        </select>
+
+        <div class="search-wrapper">
+            <select id="tipoBusca" class="search-select">
+                <option value="nome">Nome</option>
+                <option value="codigo">Código</option>
+                <option value="email">Email</option>
+                <option value="curso">Curso</option>
+                <option value="matricula">Matrícula</option>
+            </select>
+  
+            <input type="text" id="campoBusca" class="search-input" placeholder="Digite sua busca...">
+  
+            <button id="btnBuscar" class="search-button">Filtrar</button>
+        </div>
+    </div>
+
+
+
+    </div>
+        <h2>Lista de Alunos</h2>
+        <table>
+            <tr><th>Nome</th><th>Email</th></tr>
+            <tr><td>João</td><td>joao@email.com</td></tr>
+        </table>
+    </div>
+
+</div>
+
+</body>
+</html>

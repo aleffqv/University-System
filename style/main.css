@@ -35,7 +35,6 @@ body {
   flex: 1;
 }
 
-/* HEADER CORRETO (full width, sem borda arredondada) */
 .top-header {
   height: 70px;
   background: #ffffff;
@@ -69,11 +68,17 @@ body {
   align-items: center;
   gap: 10px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  
 }
 
 .icon img {
-  width: 40px;
-  height: 40px;
+  width: 70px;
+  height: 70px;
+}
+
+.icondash img{
+  width: 10%;
+  height: 10px;
 }
 
 .tables {
@@ -144,4 +149,112 @@ th {
 .action img {
   width: 30px;
   margin-bottom: 5px;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    background: white;
+    border: 1px solid #ccc;
+    width: 200px;
+    max-height: 200px;
+    overflow-y: auto;
+    border-radius: 8px;
+}
+
+.dropdown-menu div {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.dropdown-menu div:hover {
+    background: #f0f0f0;
+}
+
+.op-alunos {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+    flex-wrap: wrap; /* Para responsividade */
+}
+
+.filtros-container {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex: 1;
+    flex-wrap: wrap;
+}
+
+.dropdown {
+    display: flex;
+    gap: 10px;
+}
+
+.dropdown select {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background: white;
+}
+
+.search-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    flex: 1;
+    min-width: 300px;
+}
+
+.search-select {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background: white;
+}
+
+.search-input {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    min-width: 200px;
+}
+
+.search-button {
+    padding: 8px 15px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.search-button:hover {
+    background: #0056b3;
+}
+
+.bt-cad-aluno {
+    padding: 8px 20px;
+    background: #1e90ff;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.bt-cad-aluno:hover {
+    background: #1e90ff;
+    
+}
+
+.filter {
+  border-radius: 100px;
 }
