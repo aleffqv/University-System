@@ -7,3 +7,5 @@ function loadComponent(id, file) {
 }
 
 loadComponent("sidebar-container", "../components/sidebar.html");
+
+

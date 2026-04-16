@@ -12,23 +12,29 @@
 <div id="sidebar-container"></div>
 <script src="../js/loadComponents.js"></script>
 
+
 <div class="main">
   
     <div class="top-header">
         <div>Administrador</div>
     </div>
 
+
   
   <div class="content">
+
+
 
     <div>
         <h2>Gestão de Alunos</h2>
         <p>Gerenciamento de alunos na universidade</p>
     </div>
+    <hr>
 
     <div class="op-alunos">
-        <button class="bt-cad-aluno">Cadastrar Aluno</button>
-            <div class="dropdown">
+
+        <button class="bt-cad-aluno"> + Cadastrar Aluno</button>
+        <div class="dropdown">
 
         <select class="filter" name="curso" id="cursoDropdown">
             <option value="">Filtrar por curso</option>
@@ -57,15 +63,69 @@
 
 
 
-    </div>
-        <h2>Lista de Alunos</h2>
-        <table>
-            <tr><th>Nome</th><th>Email</th></tr>
-            <tr><td>João</td><td>joao@email.com</td></tr>
-        </table>
-    </div>
 
+
+
+        </div>
+
+
+
+<div class="down-main">
+    <div class="container-alunos-tab">
+        <div class="lista-alunos">
+            <h2>Lista de Alunos</h2>
+            <table class="tabela-alunos">
+                <tr><th>Nome</th><th>Email</th></tr>
+                <tr><td>João</td><td>joao@email.com</td></tr>
+            </table>
+        </div>
+
+
+        <div class="tabelasDeFuncoes">
+
+                    <div class="funcTable">
+            <h3>Matricular Aluno em Curso</h3><br>
+            <p>Selecione o aluno</p><br>
+            <select class="selectop" name="aluno" id="alunoDropdown">
+                <option value="">Selecione um aluno</option>
+            </select>
+
+            <p>Selecione o curso</p><br>
+            <select class="selectop" name="curso" id="cursoMatriculaDropdown">
+                <option value="">Selecione um curso</option>
+            </select><br>
+
+            <button class="botaoAzul">
+                Matricular 
+            </button>
+        </div>
+        <div class="funcTable">
+            <h3>Matricular aluno em Disciplina</h3>
+            <p>Selecione o curso</p>
+            <select class="selectop" name="curso" id="cursoDropdown">
+                <option value="">Selecione um curso</option>
+            </select>
+            <p>Selecione o aluno</p>
+            <select class="selectop" name="aluno" id="alunoDropdown">
+                <option value="">Selecione um aluno</option>
+            </select>
+            <p>Selecione a disciplina</p>
+            <select class="selectop" name="disciplina" id="disciplinaDropdown">
+                <option value="">Selecione uma disciplina</option>
+            </select>
+            <br>
+            <button class="botaoAzul">Matricular</button>
+
+        </div>
+        </div>
+
+
+        
+    </div>
 </div>
+
+<div id="modal-aluno-container"></div>
+<script src="../js/loadModalAluno.js"></script>
 
 </body>
 </html>
