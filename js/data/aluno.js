@@ -21,7 +21,7 @@ function salvarAluno(){
         modoEdicao = false;
         
         document.getElementById("btnSalvarAluno").textContent = "Cadastrar";
-
+        
     } else {
 
         const aluno = {
@@ -134,7 +134,7 @@ document.addEventListener("click", function (e) {
 });
 
 function editarAluno(id) {
-    const aluno = alunos.find(a =>a.id === alunoSelecionadoId);
+    const aluno = alunos.findIndex(a =>a.id == alunoSelecionadoId);
     if (!aluno) return;
 
     document.getElementById("nome").value = aluno.nome;
