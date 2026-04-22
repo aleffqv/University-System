@@ -1,18 +1,42 @@
 const alunos = JSON.parse(localStorage.getItem("alunos")) || [];
 
-function salvarAluno(){
-    const aluno = {
-        id: Date.now(),
-        nome: document.getElementById("nome").value,
-        cpf: document.getElementById("cpf").value,
-        genero: document.getElementById("generoDropdown").value,
-        email: document.getElementById("email").value,
-        telefone: document.getElementById("telefone").value,
-        dataNascimento: document.getElementById("dataNascimento").value,
-        status: "Ativo"
-    };
+let alunoSelecionadoId = null;
+let modoEdicao = false;
 
-    alunos.push(aluno);
+function salvarAluno(){
+
+    if (modoEdicao) {
+
+        const aluno = alunos.find(a => a.id == alunoSelecionadoId);
+
+        if (aluno) {
+            aluno.nome = document.getElementById("nome").value;
+            aluno.cpf = document.getElementById("cpf").value;
+            aluno.genero = document.getElementById("generoDropdown").value;
+            aluno.email = document.getElementById("email").value;
+            aluno.telefone = document.getElementById("telefone").value;
+            aluno.dataNascimento = document.getElementById("dataNascimento").value;
+        }
+
+        modoEdicao = false;
+        
+        document.getElementById("btnSalvarAluno").textContent = "Cadastrar";
+
+    } else {
+
+        const aluno = {
+            id: Date.now(),
+            nome: document.getElementById("nome").value,
+            cpf: document.getElementById("cpf").value,
+            genero: document.getElementById("generoDropdown").value,
+            email: document.getElementById("email").value,
+            telefone: document.getElementById("telefone").value,
+            dataNascimento: document.getElementById("dataNascimento").value,
+            status: "Ativo"
+        };
+
+        alunos.push(aluno);
+    }
 
     localStorage.setItem("alunos", JSON.stringify(alunos));
 
@@ -55,6 +79,9 @@ function limparFormulario() {
 
 function fecharModal() {
     document.getElementById("modal-aluno").style.display = "none";
+    //resta estado de edicao
+    modoEdicao = false;
+    document.getElementById("btnSalvarAluno").textContent = "Cadastrar"; //deixa o botao como estava antes
 }
 
 document.addEventListener("click", function (e) {
@@ -63,7 +90,7 @@ document.addEventListener("click", function (e) {
     }
 });
 
-let alunoSelecionadoId = null;
+
 
 function visualizarAluno(id) {
     const aluno = alunos.find(a => a.id === id);
@@ -105,5 +132,26 @@ document.addEventListener("click", function (e) {
         excluirAluno();
     }
 });
+
+function editarAluno(id) {
+    const aluno = alunos.find(a =>a.id === alunoSelecionadoId);
+    if (!aluno) return;
+
+    document.getElementById("nome").value = aluno.nome;
+    document.getElementById("cpf").value = aluno.cpf;
+    document.getElementById("generoDropdown").value = aluno.genero;
+    document.getElementById("email").value = aluno.email;
+    document.getElementById("telefone").value = aluno.telefone;
+    document.getElementById("dataNascimento").value = aluno.dataNascimento;
+
+    modoEdicao = true;
+    document.getElementById("btnSalvarAluno").textContent = "Salvar";
+
+    //OBSSS 
+    document.getElementById("modal-visualizar-aluno").style.display = "none";
+
+    document.getElementById("modal-aluno").style.display = "flex";
+
+}
 
 renderizarTabela();
