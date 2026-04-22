@@ -4,7 +4,8 @@ fetch("../components/modal-aluno.html")
         document.getElementById("modal-aluno-container").innerHTML = data;
 
         iniciarModalAluno();
-    })
+})
+
 
 function iniciarModalAluno() { 
     const modal = document.getElementById("modal-aluno");
