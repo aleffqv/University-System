@@ -182,7 +182,6 @@ th {
     gap: 5px;
     padding: 4px;
     flex-wrap: wrap;
-    background-color: #0056b3;
 
 }
 
@@ -242,7 +241,7 @@ th {
     background: #0056b3;
 }
 
-.bt-cad-aluno {
+.bt-cad {
     padding: 8px 20px;
     background: #1e90ff;
     color: white;
@@ -252,7 +251,7 @@ th {
     font-weight: bold;
 }
 
-.bt-cad-aluno:hover {
+.bt-cad:hover {
     background: #1e90ff;
     
 }
@@ -260,8 +259,7 @@ th {
 
 .container-alunos-tab {
   display: flex;
-  gap: 100px;
-  background-color: #00ff4c;
+  gap: 20px;
   padding: 20px;
 }
 
@@ -339,8 +337,15 @@ th:last-child {
   padding: 30px;
   border-radius: 10px;
   width: 760px;
-  height: 760px;
   max-width: 90%;
+   max-height: 80vh;
+  overflow-y: auto;
+}
+
+.modal .close-btn {
+  position: sticky;      
+  top: 0;
+  float: right;
 }
 
 

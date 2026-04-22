@@ -1,13 +1,13 @@
-fetch("../components/modal-aluno.html")
+fetch("../components/modal-departamento.html")
     .then(res => res.text())
     .then(data => {
-        document.getElementById("modal-aluno-container").innerHTML = data;
+        document.getElementById("modal-dep-container").innerHTML = data;
 
-        iniciarModalAluno();
+        iniciarModalDepartamento();
     })
 
-function iniciarModalAluno() { 
-    const modal = document.getElementById("modal-aluno");
+function iniciarModalDepartamento() { 
+    const modal = document.getElementById("modal-departamento");
     const btnAbrir = document.querySelector(".bt-cad");
     const btnFechar = document.getElementById("fecharModal");
 

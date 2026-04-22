@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Professores</title>
+  <link rel="stylesheet" href="../style/main.css">
+</head>
+<body>
+
+
+<div id="sidebar-container"></div>
+<script src="../js/loadComponents.js"></script>
+
+
+<div class="main">
+  
+    <div class="top-header">
+        <div>Administrador</div>
+    </div>
+
+
+  
+  <div class="content">
+
+
+
+    <div>
+        <h2>Gestão de Professores</h2>
+        <p>Gerenciamento de professores na universidade</p>
+    </div>
+    <hr>
+
+    <div class="op-alunos">
+
+        <button class="bt-cad"> + Cadastrar Professor</button>
+        <div class="dropdown">
+
+        <select class="filter" name="curso" id="cursoDropdown">
+            <option value="">Filtrar por curso</option>
+
+        </select>
+
+        <select name="turma" id="turmaDropdown">
+            <option value="">Filtrar por turma</option>
+
+        </select>
+
+        <div class="search-wrapper">
+            <select id="tipoBusca" class="search-select">
+                <option value="nome">Nome</option>
+                <option value="codigo">Código</option>
+                <option value="email">Email</option>
+                <option value="curso">Curso</option>
+            </select>
+  
+            <input type="text" id="campoBusca" class="search-input" placeholder="Digite sua busca...">
+  
+            <button id="btnBuscar" class="search-button">Filtrar</button>
+        </div>
+    </div>
+    </div>
+
+
+
+<div class="down-main">
+    <div class="container-alunos-tab">
+        <div class="lista-alunos">
+            <h2>Lista de Professores</h2>
+            <table class="tabela-alunos">
+                <tr><th>Código</th><th>Nome</th><th>Curso</th><th>Disciplina</th><th>Status</th><th>Ações</th></tr>
+                <tr><td>123</td><td>Alex</td><td>Ciência da Computação</td><td>Algoritmos</td><td>Ativo</td></tr>
+            </table>
+        </div>
+
+
+        <div class="tabelasDeFuncoes">
+
+            <div class="funcTable">
+            <h3>Adicionar professor a departamento</h3><br>
+            <p>Selecione o professor</p><br>
+            <select class="selectop" name="professor" id="professorDropdown">
+                <option value="">Selecione um professor</option>
+            </select>
+
+            <p>Selecione o departamento</p><br>
+            <select class="selectop" name="departamento" id="departamentoDropdown">
+                <option value="">Selecione um departamento</option>
+            </select><br>
+
+            <button class="botaoAzul">
+                Adicionar 
+            </button>
+        </div>
+        <div class="funcTable">
+            <h3>Associar professor à Disciplina</h3>
+            <p>Selecione o curso</p>
+            <select class="selectop" name="curso" id="cursoDropdown">
+                <option value="">Selecione um curso</option>
+            </select>
+            <p>Selecione o disciplina</p>
+            <select class="selectop" name="disciplina" id="disciplinaDropdown">
+                <option value="">Selecione uma disciplina</option>
+            </select>
+            <p>Selecione o professor</p>
+            <select class="selectop" name="professor" id="professorDropdown">
+                <option value="">Selecione um professor</option>
+            </select>
+            <br>
+            <button class="botaoAzul">Associar</button>
+
+        </div>
+        </div>
+
+
+        
+    </div>
+</div>
+
+<div id="modal-professor-container"></div>
+<script src="../js/loadModalProfessor.js"></script>
+
+</body>
+</html>

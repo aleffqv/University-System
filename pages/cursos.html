@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cursos</title>
+  <link rel="stylesheet" href="../style/main.css">
+</head>
+<body>
+
+
+<div id="sidebar-container"></div>
+<script src="../js/loadComponents.js"></script>
+
+
+<div class="main">
+  
+    <div class="top-header">
+        <div>Administrador</div>
+    </div>
+
+
+  
+  <div class="content">
+
+
+
+    <div>
+        <h2>Gestão de Cursos</h2>
+        <p>Gerenciamento de cursos na universidade</p>
+    </div>
+    <hr>
+
+    <div class="op-alunos">
+
+        <button class="bt-cad"> + Cadastrar Curso</button>
+        <div class="dropdown">
+
+        <select name="departamento" id="departamentoDropdown">
+            <option value="">Filtrar por departamento</option>
+
+        </select>
+
+        <div class="search-wrapper">
+            <select id="tipoBusca" class="search-select">
+                <option value="nome">Nome</option>
+                <option value="codigo">Código</option>
+            </select>
+  
+            <input type="text" id="campoBusca" class="search-input" placeholder="Digite sua busca...">
+  
+            <button id="btnBuscar" class="search-button">Filtrar</button>
+        </div>
+        </div>
+    </div>
+
+
+
+<div class="down-main">
+    <div class="container-alunos-tab">
+        <div class="lista-alunos">
+            <h2>Lista de Cursos</h2>
+            <table class="tabela-alunos">
+                <tr><th>Código</th><th>Nome</th><th>Turno</th><th>Departamento</th><th>Carga Horária</th><th>Ações</th></tr>
+                <tr><td>João</td><td>joao@email.com</td></tr>
+            </table>
+        </div>
+
+
+        <div class="tabelasDeFuncoes">
+
+            <div class="funcTable">
+            <h3>Adicionar Curso a Departamento</h3><br>
+            <p>Selecione o curso</p><br>
+            <select class="selectop" name="curso" id="cursoDropdown">
+                <option value="">Selecione um curso</option>
+            </select>
+
+            <p>Selecione o departamento</p><br>
+            <select class="selectop" name="departamento" id="departamentoDropdown">
+                <option value="">Selecione um departamento</option>
+            </select><br>
+
+            <button class="botaoAzul">
+                Adicionar 
+            </button>
+        </div>
+        <div class="funcTable">
+            <h3>Matricular aluno em Curso</h3>
+            <p>Selecione o curso</p>
+            <select class="selectop" name="curso" id="cursoDropdown">
+                <option value="">Selecione um curso</option>
+            </select>
+            <p>Selecione o aluno</p>
+            <select class="selectop" name="aluno" id="alunoDropdown">
+                <option value="">Selecione um aluno</option>
+            </select>
+            <br>
+            <button class="botaoAzul">Matricular</button>
+
+        </div>
+        </div>
+
+
+        
+    </div>
+</div>
+
+<div id="modal-curso-container"></div>
+<script src="../js/loadModalCurso.js"></script>
+
+</body>
+</html>

@@ -3,31 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastrar Aluno</title>
+    <title>Cadastrar Disciplina</title>
 </head>
 <body>
-    <div id="modal-aluno" class="modal-overlay">
+    <div id="modal-disciplina" class="modal-overlay">
     <div class="modal">
         <span class="close-btn" id="fecharModal">&times;</span>
-        <h1>Cadastrar novo aluno</h1>
+        <h1>Cadastrar nova Disciplina</h1>
         <hr>
-        <p>Nome do Aluno</p>
+        <p>Nome do Disciplina</p>
         <input type="text" class="inputbar">
-        <p>CPF do aluno</p>
-        <input type="text" class="inputbar">
-        <p>Gênero</p>
-        <select class="selectop" name="genero" id="generoDropdown">
+        <p>Curso</p>
+        <select class="selectop" name="curso" id="cursoDropdown">
             <option value="">Selecionar</option>
-            <option value="masculino">Masculino</option>
-            <option value="feminino">Feminino</option>
-            <option value="outro">Outro</option>
         </select>
-        <p>E-mail</p>
+        <p>Carga Horária</p>
         <input type="text" class="inputbar">
-        <p>Telefone</p>
+        <p>Professor</p>
+        <select class="selectop" name="turno" id="turnoDropdown">
+            <option value="">Selecionar</option>
+        </select>
+        <p>Período</p>
         <input type="text" class="inputbar">
-        <p>Data de Nascimento</p>
-        <input type="date" class="inputdate">
         <br>
         <br>
         <div class="botaoPosition">
