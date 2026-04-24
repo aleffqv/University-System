@@ -84,6 +84,7 @@ function fecharModal() {
     document.getElementById("btnSalvarAluno").textContent = "Cadastrar"; //deixa o botao como estava antes
 }
 
+//botão de salvar
 document.addEventListener("click", function (e) {
     if (e.target && e.target.id === "btnSalvarAluno") {
         salvarAluno();
@@ -127,9 +128,17 @@ function excluirAluno(id) {
 
 }
 
+//BOTÃO DE EXCLUIR ALUNO DENTRO DO MODAL DE VISUALIZAR ALUNO
 document.addEventListener("click", function (e) {
     if (e.target && e.target.id === "btnExcluirModal") {
         excluirAluno();
+    }
+});
+
+//BOTÃO DE EDITAR ALUNO DENTRO DO MODAL DE VISUALIZAR ALUNO
+document.addEventListener("click", function (e) {
+    if (e.target && e.target.id === "btnEditarModal") {
+        editarAluno(alunoSelecionadoId);
     }
 });
 

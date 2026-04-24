@@ -36,17 +36,17 @@ function salvarDepartamento(){
 function renderizarTabela() {
     const tbody = document.getElementById("tabela-dep-body");
     tbody.innerHTML = "";
-
+                   
     departamentos.forEach(departamento => {
         tbody.innerHTML += `
-            <tr>
+            <tr>   
                 <td>${departamento.id}</td>
                 <td>${departamento.nome}</td>
                 <td>
                     <button onclick="editarDepartamento(${departamento.id})" class="btn-editar" data-id="${departamento.id}">Editar</button>
                     <button onclick="visualizarDepartamento(${departamento.id})" class="btn-visualizar" data-id="${departamento.id}">Visualizar</button>
                 </td>
-            </tr>
+            </tr>  
         `;
     });
 }
@@ -76,7 +76,10 @@ function editarDepartamento(id) {
         modoEdicao = true;
         document.getElementById("btnSalvarDep").textContent = "Salvar";
         document.getElementById("modal-departamento").style.display = "flex";
+
+        document.getElementById("modal-visualizar-dep").style.display = "none";
     }
+
 }
 
 function visualizarDepartamento(id) {
@@ -87,7 +90,7 @@ function visualizarDepartamento(id) {
 
     departamentoSelecionadoId = id; 
 
-    document.getElementById("nomeDepView").textContent = departamento.nome; 
+    document.getElementById("visualizarNomeDep").textContent = departamento.nome; 
     modal.style.display = "flex";
 }
 
@@ -97,6 +100,26 @@ function excluirDepartamento(id) {
     if (index === -1) return;
 
     departamentos.splice(index, 1);
+
+    localStorage.setItem("departamentos", JSON.stringify(departamentos));
+    document.getElementById("modal-visualizar-dep").style.display = "none";
+
+    renderizarTabela();
+
 }
+
+//excluir departamento dentro do modal de visualizar departamento
+document.addEventListener("click", function (e) {
+    if (e.target && e.target.id === "btnExcluirModal") {
+        excluirDepartamento(departamentoSelecionadoId);
+    }
+});
+
+//editar departamento dentro do modal de visualizar departamento
+document.addEventListener("click", function (e) {
+    if (e.target && e.target.id === "btnEditarModal") {
+        editarDepartamento(departamentoSelecionadoId);
+    }   
+});
 
 renderizarTabela();

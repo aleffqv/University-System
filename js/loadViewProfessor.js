@@ -1,0 +1,24 @@
+fetch("../components/infos/modal-visualizar-professor.html")
+    .then(response => response.text())
+    .then(data => {
+        document.getElementById("visualizar-professor-container").innerHTML = data;
+
+        iniciarViewProfessor();
+    })
+
+    function iniciarViewProfessor() {
+    const modal = document.getElementById("modal-visualizar-professor");
+    const btnFechar = document.getElementById("fecharViewProfessor");
+
+    if (!modal || !btnFechar) return;
+
+    btnFechar.addEventListener("click", () => {
+        modal.style.display = "none";
+    });
+
+    window.addEventListener("click", (e) => {
+        if (e.target === modal) {
+            modal.style.display = "none";
+        }
+    });
+}

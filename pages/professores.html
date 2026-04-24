@@ -68,8 +68,17 @@
         <div class="lista-alunos">
             <h2>Lista de Professores</h2>
             <table class="tabela-alunos">
-                <tr><th>Código</th><th>Nome</th><th>Curso</th><th>Disciplina</th><th>Status</th><th>Ações</th></tr>
-                <tr><td>123</td><td>Alex</td><td>Ciência da Computação</td><td>Algoritmos</td><td>Ativo</td></tr>
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Nome</th>
+                        <th>Curso</th>
+                        <th>Disciplina</th>
+                        <th>Status</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody id="tabela-professores-body"></tbody>
             </table>
         </div>
 
@@ -119,6 +128,9 @@
 
 <div id="modal-professor-container"></div>
 <script src="../js/loadModalProfessor.js"></script>
+<div id="visualizar-professor-container"></div>
+<script src="../js/loadViewProfessor.js"></script>
+<script defer src="../js/data/professor.js"></script>
 
 </body>
 </html>
