@@ -83,14 +83,38 @@ function editarDepartamento(id) {
 }
 
 function visualizarDepartamento(id) {
-    const departamento = departamentos.find(dep => dep.id === id);
+    const departamentos = JSON.parse(localStorage.getItem("departamentos")) || [];
+    const cursos = JSON.parse(localStorage.getItem("cursos")) || [];
+
+    const departamento = departamentos.find(dep => dep.id == id);
     if (!departamento) return;
 
     const modal = document.getElementById("modal-visualizar-dep");
 
-    departamentoSelecionadoId = id; 
+    departamentoSelecionadoId = id;
 
-    document.getElementById("visualizarNomeDep").textContent = departamento.nome; 
+    document.getElementById("visualizarNomeDep").textContent = departamento.nome;
+
+
+    const cursosDoDepartamento = cursos.filter(curso => curso.departamentoId == id);
+
+
+    const tbody = document.getElementById("tabela-cursos-dep-body");
+    tbody.innerHTML = "";
+
+    cursosDoDepartamento.forEach(curso => {
+        tbody.innerHTML += `
+            <tr>
+                <td>${curso.id}</td>
+                <td>${curso.nomec}</td>
+                <td>${curso.turno}</td>
+                <td>${curso.periodos}</td>
+                <td>${curso.cargaHorariac}</td>
+            </tr>
+        `;
+    });
+
+    // abre modal
     modal.style.display = "flex";
 }
 

@@ -4,6 +4,9 @@ fetch("../components/modal-curso.html")
         document.getElementById("modal-curso-container").innerHTML = data;
 
         iniciarModalCurso();
+        carregarDepartamentosDropdown("departamentoDropdown");
+        carregarDepartamentosDropdown("departamentoModalDropdown");
+        carregarDepartamentosDropdown("departamentoFuncDropDown");
     })
 
 function iniciarModalCurso() { 
@@ -14,6 +17,7 @@ function iniciarModalCurso() {
     if (!modal || !btnAbrir || !btnFechar) return;
 
     btnAbrir.addEventListener("click", () => {
+        carregarDepartamentosDropdown("departamentoModalDropdown");
         modal.style.display = "flex";
     })
 
@@ -26,4 +30,11 @@ function iniciarModalCurso() {
             modal.style.display = "none";
         }
     })
-}    
+
+    window.addEventListener("keydown", (e) =>{
+        if (e.key === "Escape") {
+            modal.style.display = "none";
+        }
+
+    })
+}

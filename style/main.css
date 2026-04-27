@@ -19,7 +19,6 @@ body {
   display: flex;
   flex-direction: column;
   position: fixed;
-  
 }
 
 .sidebar a {

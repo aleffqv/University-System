@@ -4,6 +4,7 @@ fetch("../components/modal-disciplina.html")
         document.getElementById("modal-disciplina-container").innerHTML = data;
 
         iniciarModalDisciplina();
+        carregarCursoDropdown("cursoModalDropdown");
     })
 
 function iniciarModalDisciplina() { 
@@ -14,6 +15,7 @@ function iniciarModalDisciplina() {
     if (!modal || !btnAbrir || !btnFechar) return;
 
     btnAbrir.addEventListener("click", () => {
+        carregarCursoDropdown("cursoModalDropdown");
         modal.style.display = "flex";
     })
 
@@ -25,5 +27,12 @@ function iniciarModalDisciplina() {
         if (e.target === modal) {
             modal.style.display = "none";
         }
+    })
+
+    window.addEventListener("keydown", (e) =>{
+        if (e.key === "Escape") {
+            modal.style.display = "none";
+        }
+
     })
 }    

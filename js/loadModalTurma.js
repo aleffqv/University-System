@@ -26,4 +26,11 @@ function iniciarModalTurma() {
             modal.style.display = "none";
         }
     })
+
+    window.addEventListener("keydown", (e) =>{
+        if (e.key === "Escape") {
+            modal.style.display = "none";
+        }
+
+    })    
 }    
