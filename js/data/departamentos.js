@@ -82,26 +82,33 @@ function editarDepartamento(id) {
 
 }
 
+//mostrar dep e cursos associados
 function visualizarDepartamento(id) {
+    //carrega os dados de dep e curso
     const departamentos = JSON.parse(localStorage.getItem("departamentos")) || [];
     const cursos = JSON.parse(localStorage.getItem("cursos")) || [];
 
+    //seleciona um departamento especifico
     const departamento = departamentos.find(dep => dep.id == id);
     if (!departamento) return;
 
+    //carrega o modal de visualizar departamento
     const modal = document.getElementById("modal-visualizar-dep");
 
+    //associa o id de dep a uma variavel global
     departamentoSelecionadoId = id;
 
+    //coloca o nome do departamento no modal (id visualizarNomeDep)
     document.getElementById("visualizarNomeDep").textContent = departamento.nome;
 
-
+    //filtra o curso pelo id do departamento que foi selecionado
     const cursosDoDepartamento = cursos.filter(curso => curso.departamentoId == id);
 
-
+    //carrega a tabela de cursos do departamento dentro do modal
     const tbody = document.getElementById("tabela-cursos-dep-body");
     tbody.innerHTML = "";
 
+    //constroi a tabela de cursos do departamento
     cursosDoDepartamento.forEach(curso => {
         tbody.innerHTML += `
             <tr>

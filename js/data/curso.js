@@ -147,6 +147,55 @@ function carregarDepartamentosDropdown(selectId) {
     });
 }
 
+function visualizarCurso(id) {
+    const curso = cursos.find(c => c.id === id);
+    if (!curso) return;
+
+    
+
+    const modal = document.getElementById("modal-visualizar-curso");
+
+    cursoSelecionadoId = id;
+
+    document.getElementById("visualizarNomeCurso").textContent = curso.nomec;
+    document.getElementById("visualizarDepartamentoCurso").textContent = getNomeDepartamento(curso.departamentoId);
+    document.getElementById("visualizarCargaHorariaCurso").textContent = curso.cargaHorariac;
+    document.getElementById("visualizarTurnoCurso").textContent = curso.turno;
+    document.getElementById("visualizarPeriodosCurso").textContent = curso.periodos;
+
+    renderizarDisciplinasCurso(id);
+
+    modal.style.display = "flex";
+}
+
+function renderizarDisciplinasCurso(id) {
+    cursoSelecionadoId = id;
+
+    const disciplinas = JSON.parse(localStorage.getItem("disciplinas")) || [];
+
+    const tbody = document.getElementById("tabela-disciplinas-curso");
+    tbody.innerHTML = "";
+
+    const disciplinasDoCurso = disciplinas.filter(d => d.cursoId == id);
+
+    if (disciplinasDoCurso.length === 0) {
+        tbody.innerHTML = ' <tr><td colspan="5">Nenhuma disciplina cadastrada</td></tr>';
+        return;
+    }
+
+    disciplinasDoCurso.forEach(d => {
+        tbody.innerHTML += `
+            <tr>
+                <td>${d.id}</td>
+                <td>${d.nomed}</td>
+                <td>--</td> <!-- professor -->
+                <td>${d.periodod}</td>
+                <td>${d.cargahorariad}</td>
+            </tr>
+        `;
+    });
+}
+
 function getNomeDepartamento(id) {
     const departamentos = JSON.parse(localStorage.getItem("departamentos")) || [];
     const dep = departamentos.find(d => d.id == id);

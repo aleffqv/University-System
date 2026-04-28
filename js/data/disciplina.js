@@ -92,6 +92,34 @@ function carregarCursoDropdown(selectId) {
     });
 }
 
+function editarDisciplina(id) {
+    disciplinaSelecionadaId = id;
+    const disciplina = disciplinas.find(d => d.id == id);
+    if (!disciplina) return;
+    document.getElementById("nomed").value = disciplina.nomed;
+    document.getElementById("cargahorariad").value = disciplina.cargaHorariad;
+    document.getElementById("cursoModalDropdown").value = disciplina.cursoId;
+    document.getElementById("periodod").value = disciplina.periodod;
+
+    modoEdicao = true;
+    document.getElementById("btnSalvarDisciplina")
+    //document.getElementById("modal-visualizar-disciplina").style.display = "none";
+    document.getElementById("modal-disciplina").style.display = "flex";
+}
+
+function visualizarDisciplina(id){
+    
+    const disciplina = disciplinas.find(d => d.id == id);
+    if (!disciplina) return;
+
+    const modal = document.getElementById("visualizar-disciplina-container");
+
+    disciplinaSelecionadaId = id;
+
+    
+    modal.style.display = "flex";
+}
+
 function getNomeCurso(id){
     const cursos = JSON.parse(localStorage.getItem("cursos")) || [];
     const curso = cursos.find(c => c.id == id);
