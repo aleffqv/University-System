@@ -188,7 +188,7 @@ function renderizarDisciplinasCurso(id) {
             <tr>
                 <td>${d.id}</td>
                 <td>${d.nomed}</td>
-                <td>--</td> <!-- professor -->
+                <td>-- </td> <!-- professor -->
                 <td>${d.periodod}</td>
                 <td>${d.cargahorariad}</td>
             </tr>

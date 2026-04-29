@@ -4,9 +4,9 @@ fetch("../components/infos/modal-visualizar-professor.html")
         document.getElementById("visualizar-professor-container").innerHTML = data;
 
         iniciarViewProfessor();
-    })
+})
 
-    function iniciarViewProfessor() {
+function iniciarViewProfessor() {
     const modal = document.getElementById("modal-visualizar-professor");
     const btnFechar = document.getElementById("fecharViewProfessor");
 

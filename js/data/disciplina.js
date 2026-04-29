@@ -109,16 +109,24 @@ function editarDisciplina(id) {
 
 function visualizarDisciplina(id){
     
-    const disciplina = disciplinas.find(d => d.id == id);
+    
+    const disciplina = disciplinas.find(d => d.id === id);
     if (!disciplina) return;
 
-    const modal = document.getElementById("visualizar-disciplina-container");
+    const modal = document.getElementById("modal-visualizar-disciplina");
 
     disciplinaSelecionadaId = id;
+    console.log("txt id disciplina: " + disciplinaSelecionadaId);
 
-    
+    document.getElementById("visualizarNomeDisciplina").textContent = disciplina.nomed;
+    //docume
+    document.getElementById("visualizarCargaHorariaDisciplina").textContent = disciplina.cargaHorariad;
+    document.getElementById("visualizarCursoDisciplina").textContent = getNomeCurso(disciplina.cursoId);
+    document.getElementById("visualizarPeriodosDisciplina").textContent = disciplina.periodod;
+
     modal.style.display = "flex";
 }
+
 
 function getNomeCurso(id){
     const cursos = JSON.parse(localStorage.getItem("cursos")) || [];

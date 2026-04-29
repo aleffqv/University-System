@@ -63,8 +63,19 @@
         <div class="lista-alunos">
             <h2>Lista de Turmas</h2>
             <table class="tabela-alunos">
-                <tr><th>Código</th><th>Disciplina</th><th>Professor</th><th>Sala</th><th>Horário</th><th>Vagas</th><th>Ações</th></tr>
-                <tr><td>João</td><td>joao@email.com</td></tr>
+                <thead> 
+                    <tr>
+                        <th>Código</th>
+                        <th>Nome</th>
+                        <th>Disciplina</th>
+                        <th>Professor</th>
+                        <th>Sala</th>
+                        <th>Horário</th>
+                        <th>Vagas</th>
+                        <th>Ações</th></tr>
+                    <tr>
+                </thead>
+                    <tbody id="tabela-turmas-body"></tbody>
             </table>
         </div>
 
@@ -110,6 +121,8 @@
 
 <div id="modal-turma-container"></div>
 <script src="../js/loadModalTurma.js"></script>
+<div id="modal-visualizar-turma-container"></div>
+<script src="../js/data/turma.js"></script>
 
 </body>
 </html>
