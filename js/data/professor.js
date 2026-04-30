@@ -1,4 +1,6 @@
 const professores = JSON.parse(localStorage.getItem("professores")) || [];
+const departamentos = JSON.parse(localStorage.getItem("departamentos")) || [];
+
 
 let modoEdicao = false;
 let professorSelecionadoId = null;
@@ -12,6 +14,7 @@ function salvarProfessor(){
             professor.nomep = document.getElementById("nomep").value;
             professor.cpfp = document.getElementById("cpfp").value;
             professor.generop = document.getElementById("generoDropdown").value;
+            professor.departamentoId = document.getElementById("departamentoDropdown").value;
             professor.emailp = document.getElementById("emailp").value;
             professor.telefonep = document.getElementById("telefonep").value;
             professor.datanascimentop = document.getElementById("datanascimentop").value;
@@ -29,11 +32,13 @@ function salvarProfessor(){
         nomep: document.getElementById("nomep").value,
         cpfp: document.getElementById("cpfp").value,
         generop: document.getElementById("generoDropdown").value,
+        departamentoId: document.getElementById("departamentoProfDropdown").value,
         emailp: document.getElementById("emailp").value,
         telefonep: document.getElementById("telefonep").value,
         datanascimentop: document.getElementById("datanascimentop").value,
         especializacaop: document.getElementById("especializacaop").value,
-        titulacaop: document.getElementById("titulacaop").value
+        titulacaop: document.getElementById("titulacaop").value,
+        turmaId: null
         };
 
         professores.push(professor);
@@ -53,7 +58,9 @@ document.addEventListener("click", function (e) {
 });
 
 
+
 function renderizarTabela() {
+    
     const tbody = document.getElementById("tabela-professores-body");
     tbody.innerHTML = "";
         professores.forEach(professor => {
@@ -61,7 +68,7 @@ function renderizarTabela() {
             <tr>
                 <td>${professor.id}</td>
                 <td>${professor.nomep}</td>
-                <td>${professor.emailp}</td>
+                <td>${getNomeDepartamento(professor.departamentoId)}</td>
                 <td>${professor.generop}</td>
                 <td>${professor.titulacaop}</td>
                 <td>
@@ -69,6 +76,21 @@ function renderizarTabela() {
                     <button onclick="visualizarProfessor(${professor.id})" class="btn-visualizar" data-id="${professor.id}">Visualizar</button>
                 </td>
             </tr>
+        `;
+    });
+}
+
+function carregarDepartamentosDropdown(selectId) {
+    const select = document.getElementById(selectId);
+
+    // limpa antes de preencher
+    select.innerHTML = '<option value="">Selecione um departamento</option>';
+
+    departamentos.forEach(dep => {
+        select.innerHTML += `
+            <option value="${dep.id}">
+                ${dep.nome}
+            </option>
         `;
     });
 }
@@ -157,6 +179,12 @@ function editarProfessor(id) {
     document.getElementById("modal-professor").style.display = "flex";
 
 
+}
+
+function getNomeDepartamento(id){
+    const departamentos = JSON.parse(localStorage.getItem("departamentos")) || [];
+    const departamento = departamentos.find(dep => dep.id == id);
+    return departamento ? departamento.nome: "Nenhum departamento encontrado"
 }
 
 //precisa ficar no final do arquivo para sempre ser recarregada, evita erros de salvar e não aparecer a tabela atualizada 

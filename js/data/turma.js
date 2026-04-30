@@ -1,9 +1,13 @@
 const turmas = JSON.parse(localStorage.getItem("turmas")) || [];
 const professores = JSON.parse(localStorage.getItem("professores")) || [];
 const disciplinas = JSON.parse(localStorage.getItem("disciplinas")) || [];
+const cursos = JSON.parse(localStorage.getItem("cursos")) || [];
+
 
 let modoEdicao = false;
 let turmaSelecionadaId = null;
+
+let cursoSelecionadoId = null;
 
 function salvarTurma() {
 
@@ -19,6 +23,7 @@ function salvarTurma() {
     } else {
         const turma = {
             id: Date.now(),
+            cursoId: document.getElementById("cursoTDropdown").value,
             professorId: document.getElementById("professorTDropdown").value,
             disciplinaId: document.getElementById("disciplinaTDropdown").value,
             nomet: "T - ",
@@ -53,6 +58,7 @@ function renderizarTabela() {
                 <td>${turma.id}</td>
                 <td>${turma.nomet}</td>
                 <td>${turma.disciplinaId}</td>
+                <td>${getNomeCurso(turma.cursoId)}</td>
                 <td>${turma.professorId}</td>
                 <td>${turma.salat}</td>
                 <td>${turma.horariot}</td>
@@ -65,6 +71,8 @@ function renderizarTabela() {
         `;
     });
 }
+
+
 
 function limparFormulario() {
     document.getElementById("nomet").value = "";
@@ -79,6 +87,72 @@ function fecharModal() {
     document.getElementById("modal-turma").style.display = "none";
     modoEdicao = false;
     document.getElementById("btnSalvarDisciplina").textContent = "Cadastrar"; 
+}
+
+function carregarCursosDropdown(selectId) {
+    const select = document.getElementById(selectId);
+
+    // limpa antes de preencher
+    select.innerHTML = '<option value="">Selecione um curso</option>';
+    
+
+    cursos.forEach(c => {
+        select.innerHTML += `
+            <option value="${c.id}">
+                ${c.nomec}
+            </option>
+        `;
+    });
+
+    
+}
+
+//carregar disciplinas de um curso especifico dropdown, linkar utilizando o id do curso
+function carregarDisciplinasDropdown(selectId, cursoId) {
+    const select = document.getElementById(selectId);
+    
+    if (!cursoId) {
+        select.innerHTML = '<option value="">Selecione um curso primeiro</option>';
+        return;
+    }
+
+    const disciplinasFilter = disciplinas.filter(df => df.cursoId == cursoId);
+
+    select.innerHTML = '<option value="">Selecione uma disciplina</option>';
+
+    disciplinasFilter.forEach(df => {
+        select.innerHTML += `
+            <option value="${df.id}">
+                ${df.nomed}
+            </option>
+        `;
+    });
+}
+
+function carregarProfessoresDropdown(selectId, cursoId){
+    const select = document.getElementById(selectId);
+    const cursoDep = cursos.find(c => c.id == cursoId)?.departamentoId;
+
+    
+    const professoresFilter = professores.filter(p => p.departamentoId == cursoDep);
+
+    select.innerHTML = '<option value="">Selecione um professor</option>';
+
+    professoresFilter.forEach(p => {
+        select.innerHTML += `
+            <option value="${p.id}">
+                ${p.nomep}
+            </option>
+        `;
+    });
+
+}
+
+function getNomeCurso(id){
+    const cursos = JSON.parse(localStorage.getItem("cursos")) || [];
+    const curso = cursos.find(c => c.id == id);
+    return curso ? curso.nomec: "Nenhum curso encontrado"
+
 }
 
 renderizarTabela();

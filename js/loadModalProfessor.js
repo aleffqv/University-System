@@ -4,6 +4,7 @@ fetch("../components/modal-professor.html")
         document.getElementById("modal-professor-container").innerHTML = data;
 
         iniciarModalProfessor();
+        carregarDepartamentosDropdown("departamentoProfDropdown");
     })
 
 function iniciarModalProfessor() { 
@@ -14,6 +15,7 @@ function iniciarModalProfessor() {
     if (!modal || !btnAbrir || !btnFechar) return;
 
     btnAbrir.addEventListener("click", () => {
+        carregarDepartamentosDropdown("departamentoProfDropdown");
         modal.style.display = "flex";
     })
 
