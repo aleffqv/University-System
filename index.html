@@ -56,16 +56,21 @@
       <div class="table-card">
         <h3>Turmas em andamento</h3>
         <table>
-          <thead>
-            <tr>
-              <th>Turma</th>
-              <th>Curso</th>
-              <th>Disciplina</th>
-              <th>Professor</th>
-              <th>Sala</th>
-              <th>Horário</th>
-            </tr>
-          </thead>
+          <thead> 
+                    <tr>
+                        <th>Código</th>
+                        <th>Nome</th>                       
+                        <th>Disciplina</th>
+                        <th>Curso</th>
+                        <th>Professor</th>
+                        <th>Sala</th>
+                        <th>Horário</th>
+                        <th>Vagas</th>
+                        <th>Ações</th></tr>
+                    <tr>
+                </thead>
+                    <tbody id="tabela-turmas-body"></tbody>
+            </table>
           <tbody id="tabela-turmas">
             <tr><td colspan="6" class="empty">Nenhuma turma em andamento</td></tr>
           </tbody>
@@ -147,6 +152,7 @@
 
 </div>
 
+<script src="js/data/turma.js"></script>
 <script src="js/script.js"></script>
 </body>
 </html>

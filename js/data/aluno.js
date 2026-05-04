@@ -32,6 +32,7 @@ function salvarAluno(){
             email: document.getElementById("email").value,
             telefone: document.getElementById("telefone").value,
             dataNascimento: document.getElementById("dataNascimento").value,
+            cursoId: document.getElementById("cursoDropdown"),
             status: "Ativo"
         };
 
@@ -75,6 +76,7 @@ function limparFormulario() {
     document.getElementById("email").value = "";
     document.getElementById("telefone").value = "";
     document.getElementById("dataNascimento").value = "";
+    document.getElementById("cursoDropdown").value = "";
 }
 
 function fecharModal() {
@@ -165,4 +167,66 @@ function editarAluno(id) {
 
 }
 
+function matricularAlunoCurso(alunoId, cursoId){
+    const alunos = JSON.parse(localStorage.getItem("alunos")) || [];
+
+    const aluno = alunos.find(a => a.id == alunoId);
+
+    if(aluno.cursoId){
+        alert("Aluno já matriculado em algum curso");
+        return;
+    }
+
+    aluno.cursoId = cursoId;
+
+    localStorage.setItem("alunos", JSON.stringify(alunos));
+    alert("Aluno matriculado com sucesso!");
+
+}
+
+//botao matr curso
+document.addEventListener("click", function(e){
+    if (e.target && e.target.id === "btnMatricularCurso") {
+
+        const alunoId = document.getElementById("alunoDropdown").value;
+        const cursoId = document.getElementById("cursoMatriculaDropdown").value;
+
+        matricularAlunoCurso(alunoId, cursoId);
+    }
+});
+
+function carregarAlunosDropdown(selectId) {
+    const select = document.getElementById(selectId);
+    const alunos = JSON.parse(localStorage.getItem("alunos")) || [];
+
+    select.innerHTML = '<option value="">Selecione um aluno</option>';
+
+    alunos.forEach(a => {
+        select.innerHTML += `
+            <option value="${a.id}">
+                ${a.nome}
+            </option>
+        `;
+    });
+}
+
+function carregarCursosDropdown(selectId) {
+    const select = document.getElementById(selectId);
+    const cursos = JSON.parse(localStorage.getItem("cursos")) || [];
+
+    select.innerHTML = '<option value="">Selecione um curso</option>';
+
+    cursos.forEach(c => {
+        select.innerHTML += `
+            <option value="${c.id}">
+                ${c.nomec}
+            </option>
+        `;
+    });
+}
+
+
+carregarAlunosDropdown("alunoDropdown");
+carregarAlunosDropdown("alunoTurmaDropdown");
+carregarCursosDropdown("cursoMatriculaDropdown");
 renderizarTabela();

@@ -20,13 +20,15 @@ function iniciarModalTurma() {
 
     //dropdown de disciplinas - curso
     cursoSelect.addEventListener("change", function () {
-        const cursoId = this.value;
-        carregarDisciplinasDropdown("disciplinaTDropdown", cursoId);
-    });
+    const cursoId = this.value;
+
+    carregarDisciplinasDropdown("disciplinaTDropdown", cursoId);
+    carregarProfessoresDropdown("professorTDropdown", cursoId);
+});
 
     disciplinaSelect.addEventListener("change", function () {
         const disciplinaId = this.value;
-        carregarProfessoresDropdown("professorTDropdown", disciplinaId);
+        carregarProfessoresDropdown("professorTDropdown", cursoId);
     });
 
     if (!modal || !btnAbrir || !btnFechar) return;

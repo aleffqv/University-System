@@ -57,9 +57,9 @@ function renderizarTabela() {
             <tr>
                 <td>${turma.id}</td>
                 <td>${turma.nomet}</td>
-                <td>${turma.disciplinaId}</td>
+                <td>${getNomeDisciplina(turma.disciplinaId)}</td>
                 <td>${getNomeCurso(turma.cursoId)}</td>
-                <td>${turma.professorId}</td>
+                <td>${getNomeProfessor(turma.professorId)}</td>
                 <td>${turma.salat}</td>
                 <td>${turma.horariot}</td>
                 <td>${turma.nvagast}</td>
@@ -81,6 +81,13 @@ function limparFormulario() {
     document.getElementById("turnoTDropdown").value = "";
     document.getElementById("nvagast").value = "";
     document.getElementById("salat").value = "";
+    document.getElementById("cursoTDropdown").selectedIndex = 0;
+
+    document.getElementById("disciplinaTDropdown").innerHTML =
+        '<option value="">Selecione um curso primeiro</option>';
+
+    document.getElementById("professorTDropdown").innerHTML =
+        '<option value="">Selecione um curso primeiro</option>';
 }
 
 function fecharModal() {
@@ -152,6 +159,20 @@ function getNomeCurso(id){
     const cursos = JSON.parse(localStorage.getItem("cursos")) || [];
     const curso = cursos.find(c => c.id == id);
     return curso ? curso.nomec: "Nenhum curso encontrado"
+
+}
+
+function getNomeDisciplina(id){
+    const disciplinas = JSON.parse(localStorage.getItem("disciplinas")) || [];
+    const disciplina = disciplinas.find(d => d.id == id);
+    return disciplina ? disciplina.nomed: "Nenhuma disciplina encontrada"
+
+}
+
+function getNomeProfessor(id){
+    const professores = JSON.parse(localStorage.getItem("professores")) || [];
+    const professor = professores.find(p => p.id == id);
+    return professor ? professor.nomep: "Nenhum professor encontrado"
 
 }
 

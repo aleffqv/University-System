@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Alunos - UniSystem</title>
+  <title>Matriculas</title>
   <link rel="stylesheet" href="../style/main.css">
 </head>
 <body>
@@ -22,8 +22,8 @@
 
 
     <div>
-        <h2>Gestão de Alunos</h2>
-        <p>Gerenciamento de alunos na universidade</p>
+        <h2>Gestão de Matriculas</h2>
+        <p>Gerenciamento de matriculas na universidade</p>
     </div>
     <hr>
 
@@ -63,14 +63,14 @@
 <div class="down-main">
     <div class="container-alunos-tab">
         <div class="lista-alunos">
-            <h2>Lista de Alunos</h2>
+            <h2>Lista de Matriculas</h2>
             <table class="tabela-alunos">
             <thead>
                 <tr>
-                    <th>Matrícula</th>
-                    <th>Nome</th>
-                    <th>Email</th>
-                    <th>Gênero</th>
+                    <th>Código</th>
+                    <th>Aluno</th>
+                    <th>Turma</th>
+                    <th>Curso</th>
                     <th>Status</th>
                     <th>Ações</th>
                 </tr>
@@ -82,38 +82,7 @@
 
         <div class="tabelasDeFuncoes">
 
-            <div class="funcTable">
-            <h3>Matricular Aluno em Curso</h3><br>
-            <p>Selecione o aluno</p><br>
-            <select class="selectop" name="aluno" id="alunoDropdown">
-                <option value="">Selecione um aluno</option>
-            </select>
-
-            <p>Selecione o curso</p><br>
-            <select class="selectop" name="curso" id="cursoMatriculaDropdown">
-                <option value="">Selecione um curso</option>
-            </select><br>
-
-            <button id="btnMatricularCurso" class="botaoAzul">
-                Matricular 
-            </button>
-        </div>
-
-
-        <div class="funcTable">
-            <h3>Matricular aluno em Disciplina</h3>
-            <p>Selecione o Aluno</p>
-            <select class="selectop" name="aluno" id="alunoTurmaDropdown">
-                <option value="">Selecione um aluno</option>
-            </select>
-            <p>Selecione a Turma</p>
-            <select class="selectop" name="disciplina" id="turmaDropdown">
-                <option value="">Selecione uma disciplina</option>
-            </select>
-            <br>
-            <button class="botaoAzul">Matricular</button>
-
-        </div>
+            
         </div>
 
 
