@@ -5,6 +5,7 @@ fetch("../components/modal-professor.html")
 
         iniciarModalProfessor();
         carregarDepartamentosDropdown("departamentoProfDropdown");
+        
     })
 
 function iniciarModalProfessor() { 

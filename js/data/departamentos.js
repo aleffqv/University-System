@@ -33,11 +33,7 @@ function salvarDepartamento(){
     limparFormulario();
 }
 
-function getNomeDepartamento(id){
-    const departamentos = JSON.parse(localStorage.getItem("departamentos")) || [];
-    const departamento = departamentos.find(dep => dep.id == id);
-    return departamento ? departamento.nome: "Nenhum departamento encontrado"
-}
+
 
 function renderizarTabela() {
     const tbody = document.getElementById("tabela-dep-body");

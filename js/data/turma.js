@@ -56,7 +56,7 @@ function renderizarTabela() {
         tbody.innerHTML += `
             <tr>
                 <td>${turma.id}</td>
-                <td>${turma.nomet}</td>
+                <td>${turma.nomet} -</td>
                 <td>${getNomeDisciplina(turma.disciplinaId)}</td>
                 <td>${getNomeCurso(turma.cursoId)}</td>
                 <td>${getNomeProfessor(turma.professorId)}</td>

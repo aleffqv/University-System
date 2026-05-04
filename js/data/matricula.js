@@ -1,6 +1,7 @@
 const matriculas = JSON.parse(localStorage.getItem("matriculas")) || [];
 const alunos = JSON.parse(localStorage.getItem("alunos")) || [];
 const turmas = JSON.parse(localStorage.getItem("turmas")) || [];
+const cursos = JSON.parse(localStorage.getItem("cursos")) || [];
 
 function matricularAlunoTurma(alunoId, turmaId){
 
@@ -51,4 +52,33 @@ function matricularAlunoTurma(alunoId, turmaId){
     localStorage.setItem("matriculas", JSON.stringify(matriculas));
 
     alert("Matrícula realizada com sucesso!");
+    renderizarTabela();
 }
+
+function renderizarTabela() {
+    
+    const tbody = document.getElementById("tabela-matriculas-body");
+    tbody.innerHTML = "";
+
+    matriculas.forEach(matricula => {
+        const aluno = alunos.find(a => a.id == matricula.alunoId);
+        const turma = turmas.find(t => t.id == matricula.turmaId);
+        const curso = cursos.find(c => c.id == turma.cursoId);
+
+        tbody.innerHTML += `
+            <tr>
+                <td>${matricula.id}</td>
+                <td>${aluno.nome}</td>
+                <td>${turma.nome}</td>
+                <td>${curso.nome}</td>
+                <td>${matricula.data}</td>
+                <td>
+                    <button onclick="editarMatricula(${matricula.id})" class="btn-editar" data-id="${matricula.id}">Editar</button>
+                    <button onclick="visualizarMatricula(${matricula.id})" class="btn-visualizar" data-id="${matricula.id}">Visualizar</button>
+                </td>
+            </tr>
+        `;
+    });
+}
+
+renderizarTabela();

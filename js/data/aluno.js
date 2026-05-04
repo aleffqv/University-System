@@ -32,7 +32,7 @@ function salvarAluno(){
             email: document.getElementById("email").value,
             telefone: document.getElementById("telefone").value,
             dataNascimento: document.getElementById("dataNascimento").value,
-            cursoId: document.getElementById("cursoDropdown"),
+            cursoId: null,
             status: "Ativo"
         };
 
@@ -57,7 +57,7 @@ function renderizarTabela() {
             <tr>
                 <td>${aluno.id}</td>
                 <td>${aluno.nome}</td>
-                <td>${aluno.email}</td>
+                <td>${getNomeCurso(aluno.cursoId)}</td>
                 <td>${aluno.genero}</td>
                 <td>${aluno.status}</td>
                 <td>
@@ -172,8 +172,13 @@ function matricularAlunoCurso(alunoId, cursoId){
 
     const aluno = alunos.find(a => a.id == alunoId);
 
-    if(aluno.cursoId){
+    if(!aluno.cursoId){
         alert("Aluno já matriculado em algum curso");
+        return;
+    }
+
+    if(aluno.cursoId === cursoId){
+        alert("Aluno já matriculado nesse curso");
         return;
     }
 
@@ -225,8 +230,63 @@ function carregarCursosDropdown(selectId) {
     });
 }
 
+function getNomeCurso(id){
+    const cursos = JSON.parse(localStorage.getItem("cursos")) || [];
+    const curso = cursos.find(c => c.id == id);
+    return curso ? curso.nomec: "Nenhum curso encontrado"
 
-carregarAlunosDropdown("alunoDropdown");
-carregarAlunosDropdown("alunoTurmaDropdown");
-carregarCursosDropdown("cursoMatriculaDropdown");
+}
+
+
+function carregarTurmasAlunoDropdown(selectId, alunoId) {
+    
+    const select = document.getElementById(selectId);
+    const alunos = JSON.parse(localStorage.getItem("alunos")) || [];
+    const turmas = JSON.parse(localStorage.getItem("turmas")) || [];
+
+    if (!alunoId) {
+    select.innerHTML = '<option value="">Selecione um aluno primeiro</option>';
+    return;
+    }
+
+    //procura o aluno, pega do dropdown
+    const aluno = alunos.find(a => a.id == alunoId);
+
+    //confere se o aluno existe e está em um curso
+    if (!aluno || !aluno.cursoId){
+        select.innerHTML = '<option value="">Selecione um aluno com curso</option>';
+        return;
+    }
+
+    //vai filtrar pelos cursos
+    const turmasFilter = turmas.filter(t => t.cursoId == aluno.cursoId);
+
+    select.innerHTML = '<option value="">Selecione uma turma</option>';
+
+    turmasFilter.forEach(t => {
+        select.innerHTML += `
+            <option value="${t.id}">
+                ${t.nomet}
+            </option>
+        `;
+    });
+}
+
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    carregarAlunosDropdown("alunoDropdown");
+    carregarAlunosDropdown("alunoTurmaDropdown");
+    carregarCursosDropdown("cursoMatriculaDropdown");
+
+    const alunoSelect = document.getElementById("alunoTurmaDropdown");
+
+    alunoSelect.addEventListener("change", function () {
+        const alunoId = this.value;
+
+        carregarTurmasAlunoDropdown("turmaDropdown", alunoId);
+    });
+
+});
+//carregarTurmasAlunoDropdown("turmaDropdown", "alunoTurmaDropdown");
 renderizarTabela();
