@@ -1,11 +1,11 @@
 const alunos = JSON.parse(localStorage.getItem("alunos")) || [];
 
 let alunoSelecionadoId = null;
-let modoEdicao = false;
+let modoEdicaoAluno = false;
 
 function salvarAluno(){
 
-    if (modoEdicao) {
+    if (modoEdicaoAluno) {
 
         const aluno = alunos.find(a => a.id == alunoSelecionadoId);
 
@@ -18,7 +18,7 @@ function salvarAluno(){
             aluno.dataNascimento = document.getElementById("dataNascimento").value;
         }
 
-        modoEdicao = false;
+        modoEdicaoAluno = false;
         
         document.getElementById("btnSalvarAluno").textContent = "Cadastrar";
         
@@ -82,7 +82,7 @@ function limparFormulario() {
 function fecharModal() {
     document.getElementById("modal-aluno").style.display = "none";
     //resta estado de edicao
-    modoEdicao = false;
+    modoEdicaoAluno = false;
     document.getElementById("btnSalvarAluno").textContent = "Cadastrar"; //deixa o botao como estava antes
 }
 
@@ -157,7 +157,7 @@ function editarAluno(id) {
     document.getElementById("telefone").value = aluno.telefone;
     document.getElementById("dataNascimento").value = aluno.dataNascimento;
 
-    modoEdicao = true;
+    modoEdicaoAluno = true;
     document.getElementById("btnSalvarAluno").textContent = "Salvar";
 
     //OBSSS 
@@ -167,12 +167,13 @@ function editarAluno(id) {
 
 }
 
+
 function matricularAlunoCurso(alunoId, cursoId){
     const alunos = JSON.parse(localStorage.getItem("alunos")) || [];
 
     const aluno = alunos.find(a => a.id == alunoId);
 
-    if(!aluno.cursoId){
+    if(aluno.cursoId){
         alert("Aluno já matriculado em algum curso");
         return;
     }
@@ -185,8 +186,8 @@ function matricularAlunoCurso(alunoId, cursoId){
     aluno.cursoId = cursoId;
 
     localStorage.setItem("alunos", JSON.stringify(alunos));
+    renderizarTabela();
     alert("Aluno matriculado com sucesso!");
-
 }
 
 //botao matr curso
@@ -259,7 +260,7 @@ function carregarTurmasAlunoDropdown(selectId, alunoId) {
     }
 
     //vai filtrar pelos cursos
-    const turmasFilter = turmas.filter(t => t.cursoId == aluno.cursoId);
+    const turmasFilter = turmas.filter(t => t.cursoId === aluno.cursoId);
 
     select.innerHTML = '<option value="">Selecione uma turma</option>';
 
@@ -288,5 +289,8 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
 });
-//carregarTurmasAlunoDropdown("turmaDropdown", "alunoTurmaDropdown");
-renderizarTabela();
+
+// Só executa se a página tiver a tabela de alunos
+if (document.getElementById("tabela-alunos-body")) {
+    renderizarTabela();
+}

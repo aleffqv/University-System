@@ -19,3 +19,35 @@ if (document.readyState === 'loading') {
 } else {
     carregarAlunos();
 }
+
+// Aguarda o DOM carregar completamente
+document.addEventListener("DOMContentLoaded", function() {
+    // Verifica se os dados existem no localStorage
+    if (!localStorage.getItem("turmas")) {
+        localStorage.setItem("turmas", JSON.stringify([]));
+    }
+    if (!localStorage.getItem("matriculas")) {
+        localStorage.setItem("matriculas", JSON.stringify([]));
+    }
+    if (!localStorage.getItem("alunos")) {
+        localStorage.setItem("alunos", JSON.stringify([]));
+    }
+    if (!localStorage.getItem("cursos")) {
+        localStorage.setItem("cursos", JSON.stringify([]));
+    }
+    if (!localStorage.getItem("professores")) {
+        localStorage.setItem("professores", JSON.stringify([]));
+    }
+    if (!localStorage.getItem("disciplinas")) {
+        localStorage.setItem("disciplinas", JSON.stringify([]));
+    }
+    
+    // Renderiza ambas as tabelas após garantir que todos os dados existem
+    if (typeof renderizarTabelaTurmas === 'function') {
+        renderizarTabelaTurmas();
+    }
+    
+    if (typeof renderizarTabelaMatriculas === 'function') {
+        renderizarTabelaMatriculas();
+    }
+});

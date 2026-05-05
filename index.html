@@ -32,22 +32,22 @@
 
       <div class="card">
         <div class="icon"><img src="icons/alunos.png" alt="Alunos"></div>
-        <div><strong>200</strong><br>Alunos cadastrados</div>
+        <div>Alunos<br><strong>200</strong><br>Cadastrados</div>
       </div>
 
       <div class="card">
         <div class="icon"><img src="icons/professor.png" alt="Professores"></div>
-        <div><strong>40</strong><br>Professores cadastrados</div>
+        <div>Professores<br><strong>40</strong><br>Cadastrados</div>
       </div>
 
       <div class="card">
         <div class="icon"><img src="icons/turma.png" alt="Turmas"></div>
-        <div><strong>50</strong><br>Turmas cadastradas</div>
+        <div>Turmas<br><strong>50</strong><br>Cadastradas</div>
       </div>
 
       <div class="card">
         <div class="icon"><img src="icons/disciplina.png" alt="Disciplinas"></div>
-        <div><strong>40</strong><br>Disciplinas cadastradas</div>
+        <div>Disciplinas<br><strong>40</strong><br>Cadastradas</div>
       </div>
     </div>
 
@@ -71,9 +71,6 @@
                 </thead>
                     <tbody id="tabela-turmas-body"></tbody>
             </table>
-          <tbody id="tabela-turmas">
-            <tr><td colspan="6" class="empty">Nenhuma turma em andamento</td></tr>
-          </tbody>
         </table>
       </div>
 
@@ -82,17 +79,15 @@
         <table>
           <thead>
             <tr>
+              <th>Código</th>
               <th>Aluno</th>
+              <th>Turma</th>
               <th>Curso</th>
-              <th>Disciplina</th>
-              <th>Professor</th>
-              <th>Sala</th>
-              <th>Horário</th>
+              <th>Data</th>
+              <th>Ações</th>
             </tr>
           </thead>
-          <tbody id="tabela-alunos">
-            <tr><td colspan="6" class="empty">Nenhuma matrícula encontrada</td></tr>
-          </tbody>
+              <tbody id="tabela-matriculas-body"></tbody>
         </table>
       </div>
 
@@ -152,7 +147,10 @@
 
 </div>
 
-<script src="js/data/turma.js"></script>
+
+<script src="../js/data/turma.js"></script>
+<script src="../js/data/aluno.js"></script>
+<script src="../js/data/matricula.js"></script>
 <script src="js/script.js"></script>
 </body>
 </html>

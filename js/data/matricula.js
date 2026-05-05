@@ -1,9 +1,10 @@
 const matriculas = JSON.parse(localStorage.getItem("matriculas")) || [];
-const alunos = JSON.parse(localStorage.getItem("alunos")) || [];
-const turmas = JSON.parse(localStorage.getItem("turmas")) || [];
-const cursos = JSON.parse(localStorage.getItem("cursos")) || [];
 
 function matricularAlunoTurma(alunoId, turmaId){
+
+    
+    const alunos = JSON.parse(localStorage.getItem("alunos")) || [];
+    const turmas = JSON.parse(localStorage.getItem("turmas")) || [];
 
     const aluno = alunos.find(a => a.id == alunoId);
     const turma = turmas.find(t => t.id == turmaId);
@@ -52,14 +53,20 @@ function matricularAlunoTurma(alunoId, turmaId){
     localStorage.setItem("matriculas", JSON.stringify(matriculas));
 
     alert("Matrícula realizada com sucesso!");
-    renderizarTabela();
+    renderizarTabelaMatriculas();
 }
 
-function renderizarTabela() {
+function renderizarTabelaMatriculas() {
     
     const tbody = document.getElementById("tabela-matriculas-body");
-    tbody.innerHTML = "";
+    if(!tbody) return;
 
+    const matriculas = JSON.parse(localStorage.getItem("matriculas")) || [];
+    const cursos = JSON.parse(localStorage.getItem("cursos")) || [];
+    const alunos = JSON.parse(localStorage.getItem("alunos")) || [];
+    const turmas = JSON.parse(localStorage.getItem("turmas")) || [];
+
+    tbody.innerHTML = "";
     matriculas.forEach(matricula => {
         const aluno = alunos.find(a => a.id == matricula.alunoId);
         const turma = turmas.find(t => t.id == matricula.turmaId);
@@ -69,8 +76,8 @@ function renderizarTabela() {
             <tr>
                 <td>${matricula.id}</td>
                 <td>${aluno.nome}</td>
-                <td>${turma.nome}</td>
-                <td>${curso.nome}</td>
+                <td>${turma.nomet}</td>
+                <td>${curso.nomec}</td>
                 <td>${matricula.data}</td>
                 <td>
                     <button onclick="editarMatricula(${matricula.id})" class="btn-editar" data-id="${matricula.id}">Editar</button>
@@ -81,4 +88,23 @@ function renderizarTabela() {
     });
 }
 
-renderizarTabela();
+document.addEventListener("click", function(e){
+    if(e.target && e.target.id === "btnMatricularTurma"){
+        const alunoId = document.getElementById("alunoTurmaDropdown").value;
+        const turmaId = document.getElementById("turmaDropdown").value;
+
+        if(!alunoId || !turmaId){
+            alert("Selecione um aluno e uma turma para matricular!");
+            return;
+        }
+
+        
+        matricularAlunoTurma(alunoId, turmaId);
+    }
+});
+
+
+// Só executa se a página tiver a tabela de matrículas
+if (document.getElementById("tabela-matriculas-body")) {
+    renderizarTabelaMatriculas();
+}

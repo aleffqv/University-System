@@ -3,7 +3,6 @@ const professores = JSON.parse(localStorage.getItem("professores")) || [];
 const disciplinas = JSON.parse(localStorage.getItem("disciplinas")) || [];
 const cursos = JSON.parse(localStorage.getItem("cursos")) || [];
 
-
 let modoEdicao = false;
 let turmaSelecionadaId = null;
 
@@ -37,7 +36,7 @@ function salvarTurma() {
         
     }
     localStorage.setItem("turmas", JSON.stringify(turmas));
-    renderizarTabela();
+    renderizarTabelaTurmas();
     fecharModal();
     limparFormulario();
 }
@@ -49,14 +48,15 @@ document.addEventListener("click", function(e) {
     }
 });
 
-function renderizarTabela() {
+function renderizarTabelaTurmas() {
     const tbody = document.getElementById("tabela-turmas-body");
+    if (!tbody) return;
     tbody.innerHTML = "";
         turmas.forEach(turma => {
         tbody.innerHTML += `
             <tr>
                 <td>${turma.id}</td>
-                <td>${turma.nomet} -</td>
+                <td>${turma.nomet} </td>
                 <td>${getNomeDisciplina(turma.disciplinaId)}</td>
                 <td>${getNomeCurso(turma.cursoId)}</td>
                 <td>${getNomeProfessor(turma.professorId)}</td>
@@ -176,4 +176,4 @@ function getNomeProfessor(id){
 
 }
 
-renderizarTabela();
+renderizarTabelaTurmas();
