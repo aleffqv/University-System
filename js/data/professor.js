@@ -116,7 +116,11 @@ function fecharModal() {
     document.getElementById("btnSalvarProf").textContent = "Cadastrar"; //deixa o botao como estava antes
 }
 
+
 function visualizarProfessor(id) {
+
+    const turmas = JSON.parse(localStorage.getItem("turmas")) || [];
+
     const professor = professores.find(prof => prof.id === id);
     if (!professor) return;
 
@@ -133,8 +137,30 @@ function visualizarProfessor(id) {
     document.getElementById("visualizarEspecializacaoP").textContent = professor.especializacaop;
     document.getElementById("visualizarTitulacaoP").textContent = professor.titulacaop;
 
+    const turmasDoProfessor = turmas.filter(t => t.professorId == professorSelecionadoId);
+
+    const tbodyTurmas = document.getElementById("tabela-professores-turma");
+    tbodyTurmas.innerHTML = "";
+
+    turmasDoProfessor.forEach(turma => {
+        tbodyTurmas.innerHTML += `
+            <tr>
+                <td>${turma.id}</td>
+                <td>${turma.nomet} </td>
+                <td>${getNomeDisciplina(turma.disciplinaId)}</td>
+                <td>${getNomeCurso(turma.cursoId)}</td>
+                <td>${getNomeProfessor(turma.professorId)}</td>
+                <td>${turma.salat}</td>
+                <td>${turma.horariot}</td>
+                <td>${turma.nvagast}</td>
+            </tr>
+        `;
+    });
+
     modal.style.display = "flex";
 }
+
+
 
 //BOTÃO DE EXCLUIR ALUNO DENTRO DO MODAL DE VISUALIZAR ALUNO
 document.addEventListener("click", function (e) {
@@ -186,10 +212,31 @@ function editarProfessor(id) {
 
 }
 
+function getNomeCurso(id){
+    const cursos = JSON.parse(localStorage.getItem("cursos")) || [];
+    const curso = cursos.find(c => c.id == id);
+    return curso ? curso.nomec: "Nenhum curso encontrado"
+
+}
+
+function getNomeDisciplina(id){
+    const disciplinas = JSON.parse(localStorage.getItem("disciplinas")) || [];
+    const disciplina = disciplinas.find(d => d.id == id);
+    return disciplina ? disciplina.nomed: "Nenhuma disciplina encontrada"
+
+}
+
 function getNomeDepartamento(id){
     const departamentos = JSON.parse(localStorage.getItem("departamentos")) || [];
     const departamento = departamentos.find(dep => dep.id == id);
     return departamento ? departamento.nome: "Nenhum departamento encontrado"
+}
+
+function getNomeProfessor(id){
+    const professores = JSON.parse(localStorage.getItem("professores")) || [];
+    const professor = professores.find(p => p.id == id);
+    return professor ? professor.nomep: "Nenhum professor encontrado"
+
 }
 
 //precisa ficar no final do arquivo para sempre ser recarregada, evita erros de salvar e não aparecer a tabela atualizada 
