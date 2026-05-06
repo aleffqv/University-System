@@ -76,7 +76,7 @@ function renderizarTabelaMatriculas() {
             <tr>
                 <td>${matricula.id}</td>
                 <td>${aluno.nome}</td>
-                <td>${turma.nomet}</td>
+                <td>${turma.nomet} - ${getNomeDisciplina(turma.disciplinaId)}</td>
                 <td>${curso.nomec}</td>
                 <td>${matricula.data}</td>
                 <td>
@@ -103,6 +103,12 @@ document.addEventListener("click", function(e){
     }
 });
 
+function getNomeDisciplina(id){
+    const disciplinas = JSON.parse(localStorage.getItem("disciplinas")) || [];
+    const disciplina = disciplinas.find(d => d.id == id);
+    return disciplina ? disciplina.nomed: "Nenhuma disciplina encontrada"
+
+}
 
 // Só executa se a página tiver a tabela de matrículas
 if (document.getElementById("tabela-matriculas-body")) {

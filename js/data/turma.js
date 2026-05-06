@@ -3,21 +3,27 @@ const professores = JSON.parse(localStorage.getItem("professores")) || [];
 const disciplinas = JSON.parse(localStorage.getItem("disciplinas")) || [];
 const cursos = JSON.parse(localStorage.getItem("cursos")) || [];
 
-let modoEdicao = false;
+let modoEdicaoTurma = false;
 let turmaSelecionadaId = null;
 
 let cursoSelecionadoId = null;
 
 function salvarTurma() {
 
-    if (modoEdicao) {
+    if (modoEdicaoTurma) {
         const turma = turmas.find(t => t.id === turmaSelecionadaId);
 
         if (turma) {
-
+            turma.professorId = document.getElementById("professorTDropdown").value;
+            turma.disciplinaId = document.getElementById("disciplinaTDropdown").value;
+            turma.cursoId = document.getElementById("cursoTDropdown").value;
+            turma.salat = document.getElementById("salat").value;
+            turma.nvagast = document.getElementById("nvagast").value;
+            turma.horariot = document.getElementById("horariot").value; 
         }
 
-        modoEdicao = false;
+        modoEdicaoTurma = false;
+        document.getElementById("btnSalvarTurma").textContent = "Cadastrar";
 
     } else {
         const turma = {
@@ -25,7 +31,7 @@ function salvarTurma() {
             cursoId: document.getElementById("cursoTDropdown").value,
             professorId: document.getElementById("professorTDropdown").value,
             disciplinaId: document.getElementById("disciplinaTDropdown").value,
-            nomet: "T - ",
+            nomet: "T ",
             salat: document.getElementById("salat").value,
             nvagast: document.getElementById("nvagast").value,
             horariot: document.getElementById("horariot").value  
@@ -72,6 +78,78 @@ function renderizarTabelaTurmas() {
     });
 }
 
+function visualizarTurma(id) {
+    const alunos = JSON.parse(localStorage.getItem("alunos")) || [];
+
+    const turma = turmas.find(t => t.id === id);
+    if (!turma) return;
+
+    const modal = document.getElementById("modal-visualizar-turma");
+
+    turmaSelecionadaId = id;
+
+    document.getElementById("visualizarNomeTurma").textContent = turma.nomet;
+    document.getElementById("visualizarCursoTurma").textContent = getNomeCurso(turma.cursoId);
+    document.getElementById("visualizarProfessorTurma").textContent = getNomeProfessor(turma.professorId);
+    document.getElementById("visualizarSalaTurma").textContent = turma.salat;
+    document.getElementById("visualizarHorarioTurma").textContent = turma.horariot;
+    document.getElementById("visualizarVagasTurma").textContent = turma.nvagast;
+
+
+    const matriculas = JSON.parse(localStorage.getItem("matriculas")) || [];
+    const matriculasTurma = matriculas.filter(m => m.turmaId == turmaSelecionadaId);
+
+    const alunosTurma = matriculasTurma.map(m => alunos.find(a => a.id == m.alunoId)).filter( a => a != null);
+
+
+    
+
+    const tbodyAlunos = document.getElementById("tabela-alunos-turmas");
+    tbodyAlunos.innerHTML = "";
+
+    alunosTurma.forEach(aluno => {
+        tbodyAlunos.innerHTML += `
+        <tr>
+                <td>${aluno.id}</td>
+                <td>${aluno.nome}</td>
+                <td>${getNomeCurso(aluno.cursoId)}</td>
+                <td>${aluno.genero}</td>
+                <td>${aluno.status}</td>
+                <td>
+                    <button onclick="editarAluno(${aluno.id})" class="btn-editar" data-id="${aluno.id}">Editar</button>
+                    <button onclick="visualizarAluno(${aluno.id})" class="btn-visualizar" data-id="${aluno.id}">Visualizar</button>
+                </td>
+            </tr>
+        `;        
+    })
+
+    modal.style.display = "flex";
+
+}
+
+function editarTurma(id) {
+    turmaSelecionadaId = id;
+    const turma = turmas.find(t => t.id == turmaSelecionadaId);
+    
+    if (!turma) return;
+
+    document.getElementById("professorTDropdown").value = turma.professorId;
+    document.getElementById("disciplinaTDropdown").value = turma.disciplinaId;
+    document.getElementById("cursoTDropdown").value = turma.cursoId;
+    document.getElementById("salat").value = turma.salat;
+    document.getElementById("nvagast").value = turma.nvagast;
+    document.getElementById("horariot").value = turma.horariot;
+
+    modoEdicaoTurma = true;
+    document.getElementById("btnSalvarTurma").textContent = "Salvar";
+
+    //OBSSS 
+    document.getElementById("modal-visualizar-turma").style.display = "none";
+
+    document.getElementById("modal-turma").style.display = "flex";
+
+}
+
 
 
 function limparFormulario() {
@@ -92,7 +170,7 @@ function limparFormulario() {
 
 function fecharModal() {
     document.getElementById("modal-turma").style.display = "none";
-    modoEdicao = false;
+    modoEdicaoTurma = false;
     document.getElementById("btnSalvarDisciplina").textContent = "Cadastrar"; 
 }
 
@@ -154,6 +232,7 @@ function carregarProfessoresDropdown(selectId, cursoId){
     });
 
 }
+
 
 function getNomeCurso(id){
     const cursos = JSON.parse(localStorage.getItem("cursos")) || [];

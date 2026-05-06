@@ -41,6 +41,11 @@ function salvarProfessor(){
         turmaId: null
         };
 
+        if(!professor.departamentoId){
+            alert("Selecione um departamento!");
+            return;
+        }
+
         professores.push(professor);
     }
 

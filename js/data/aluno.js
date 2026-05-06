@@ -210,7 +210,7 @@ function carregarAlunosDropdown(selectId) {
     alunos.forEach(a => {
         select.innerHTML += `
             <option value="${a.id}">
-                ${a.nome}
+                ${a.nome} - ${getNomeCurso(a.cursoId)}
             </option>
         `;
     });
@@ -267,7 +267,7 @@ function carregarTurmasAlunoDropdown(selectId, alunoId) {
     turmasFilter.forEach(t => {
         select.innerHTML += `
             <option value="${t.id}">
-                ${t.nomet}
+                ${t.nomet} - ${getNomeDisciplina(t.disciplinaId)}
             </option>
         `;
     });
@@ -289,6 +289,13 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
 });
+
+function getNomeDisciplina(id){
+    const disciplinas = JSON.parse(localStorage.getItem("disciplinas")) || [];
+    const disciplina = disciplinas.find(d => d.id == id);
+    return disciplina ? disciplina.nomed: "Nenhuma disciplina encontrada"
+
+}
 
 // Só executa se a página tiver a tabela de alunos
 if (document.getElementById("tabela-alunos-body")) {
