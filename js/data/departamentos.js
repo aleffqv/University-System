@@ -1,30 +1,43 @@
-const departamentos = JSON.parse(localStorage.getItem("departamentos")) || [];
+const API = "http://localhost:8080/departamentos";
 
-let modoEdicao = false;
+
+let modoEdicaoDep = false;
 let departamentoSelecionadoId = null;
 
-function salvarDepartamento(){
+async function salvarDepartamento(){
 
-    if (modoEdicao) {
-        const departamento = departamentos.find(dep => dep.id === departamentoSelecionadoId);
+    const departamento = {
+        nome: document.getElementById("nomeDep").value
+    };
 
-        if (departamento) {
-            departamento.nome = document.getElementById("nomeDep").value;
-        }
 
-        modoEdicao = false;
+    if (modoEdicaoDep) {
+        //const departamento = departamentos.find(dep => dep.id === departamentoSelecionadoId);
+
+        await fetch(`${API}/${departamentoSelecionadoId}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(departamento)
+        });
+
+        modoEdicaoDep = false;
         document.getElementById("btnSalvarDep").textContent = "Cadastrar";
     } else {
-        const departamento = {
-        id: Date.now(),
-        nome: document.getElementById("nomeDep").value,
-        };
-        departamentos.push(departamento);
-
+        
+        await fetch(API, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(departamento)
+        });
+            
     }
   
 
-    localStorage.setItem("departamentos", JSON.stringify(departamentos));
+    //localStorage.setItem("departamentos", JSON.stringify(departamentos));
 
     renderizarTabela();
 
@@ -35,8 +48,13 @@ function salvarDepartamento(){
 
 
 
-function renderizarTabela() {
+async function renderizarTabela() {
+
+    const response = await fetch(API);
+    const departamentos = await response.json();
+
     const tbody = document.getElementById("tabela-dep-body");
+
     tbody.innerHTML = "";
                    
     departamentos.forEach(departamento => {
@@ -68,14 +86,18 @@ document.addEventListener("click", function (e) {
 });
 
 
-function editarDepartamento(id) {
+async function editarDepartamento(id) {
+
+    const response = await fetch(`${API}/${id}`);
+    const departamento = await response.json();
+
     departamentoSelecionadoId = id;
-    const departamento = departamentos.find(dep => dep.id === departamentoSelecionadoId);
+    //const departamento = departamentos.find(dep => dep.id === departamentoSelecionadoId);
     if (departamento) {
         document.getElementById("nomeDep").value = departamento.nome;
         document.getElementById("btnSalvarDep").textContent = "Salvar";
 
-        modoEdicao = true;
+        modoEdicaoDep = true;
         document.getElementById("btnSalvarDep").textContent = "Salvar";
         document.getElementById("modal-departamento").style.display = "flex";
 
@@ -85,13 +107,10 @@ function editarDepartamento(id) {
 }
 
 //mostrar dep e cursos associados
-function visualizarDepartamento(id) {
-    //carrega os dados de dep e curso
-    const departamentos = JSON.parse(localStorage.getItem("departamentos")) || [];
-    const cursos = JSON.parse(localStorage.getItem("cursos")) || [];
-
-    //seleciona um departamento especifico
-    const departamento = departamentos.find(dep => dep.id == id);
+async function visualizarDepartamento(id) {
+    
+    const response = await fetch(`${API}/${id}`);
+    const departamento = await response.json();
     if (!departamento) return;
 
     //carrega o modal de visualizar departamento
@@ -103,22 +122,20 @@ function visualizarDepartamento(id) {
     //coloca o nome do departamento no modal (id visualizarNomeDep)
     document.getElementById("visualizarNomeDep").textContent = departamento.nome;
 
-    //filtra o curso pelo id do departamento que foi selecionado
-    const cursosDoDepartamento = cursos.filter(curso => curso.departamentoId == id);
-
     //carrega a tabela de cursos do departamento dentro do modal
     const tbody = document.getElementById("tabela-cursos-dep-body");
+
     tbody.innerHTML = "";
 
     //constroi a tabela de cursos do departamento
-    cursosDoDepartamento.forEach(curso => {
+    departamento.cursos.forEach(curso => {
         tbody.innerHTML += `
             <tr>
                 <td>${curso.id}</td>
-                <td>${curso.nomec}</td>
+                <td>${curso.nome}</td>
                 <td>${curso.turno}</td>
                 <td>${curso.periodos}</td>
-                <td>${curso.cargaHorariac}</td>
+                <td>${curso.cargaHoraria}</td>
             </tr>
         `;
     });
@@ -128,13 +145,12 @@ function visualizarDepartamento(id) {
 }
 
 
-function excluirDepartamento(id) {
-    const index = departamentos.findIndex(dep => dep.id === id);
-    if (index === -1) return;
-
-    departamentos.splice(index, 1);
-
-    localStorage.setItem("departamentos", JSON.stringify(departamentos));
+async function excluirDepartamento(id) {
+    
+    await fetch(`${API}/${id}`, {
+        method: "DELETE"
+    });
+    
     document.getElementById("modal-visualizar-dep").style.display = "none";
 
     renderizarTabela();
