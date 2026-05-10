@@ -23,16 +23,37 @@ async function salvarProfessor() {
             document.getElementById("departamentoProfDropdown").value
     };
 
-    await fetch(API, {
+    if (modoEdicao) {
 
-        method: "POST",
+        await fetch(`${API}/${professorSelecionadoId}`, {
 
-        headers: {
-            "Content-Type": "application/json"
-        },
+            method: "PUT",
 
-        body: JSON.stringify(professor)
-    });
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify(professor)
+        });
+
+        modoEdicao = false;
+
+        document.getElementById("btnSalvarProf")
+            .textContent = "Cadastrar";
+
+    } else {
+
+        await fetch(API, {
+
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify(professor)
+        });
+    }
 
     renderizarTabela();
 

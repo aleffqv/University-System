@@ -1,38 +1,50 @@
-const departamentos = JSON.parse(localStorage.getItem("departamentos")) || [];
-const cursos = JSON.parse(localStorage.getItem("cursos")) || [];
+const API = "http://localhost:8080/cursos";
+const API_DEP = "http://localhost:8080/departamentos";
 
 let modoEdicao = false;
 let cursoSelecionadoId = null;
 
 
-function salvarCurso(){
-    if (modoEdicao) {
-        const curso = cursos.find(c => c.id === cursoSelecionadoId);
+async function salvarCurso(){
 
-        if (curso) {
-            curso.nomec = document.getElementById("nomec").value;
-            curso.departamentoId = document.getElementById("departamentoModalDropdown").value;
-            curso.cargaHorariac = document.getElementById("cargaHorariac").value;
-            curso.turno = document.getElementById("turnoDropdown").value;
-            curso.periodos = document.getElementById("periodosc").value;
+        const curso = {
+            nome: document.getElementById("nomec").value,
+            departamentoId: document.getElementById("departamentoModalDropdown").value,
+            cargaHoraria: document.getElementById("cargaHorariac").value,
+            turno: document.getElementById("turnoDropdown").value,
+            periodos: document.getElementById("periodosc").value,
+            status: "ATIVO"
         }
+
+    if (modoEdicao) {
+
+        await fetch(`${API}/${cursoSelecionadoId}`, {
+
+            method: "PUT",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify(curso)
+        });
         modoEdicao = false;
 
 
     } else {
-        const curso = {
-            id: Date.now(),
-            nomec: document.getElementById("nomec").value,
-            departamentoId: document.getElementById("departamentoModalDropdown").value,
-            cargaHorariac: document.getElementById("cargaHorariac").value,
-            turno: document.getElementById("turnoDropdown").value,
-            periodos: document.getElementById("periodosc").value
-        }
-        
 
-        cursos.push(curso);
+        await fetch(API, {
+
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify(curso)
+        });
     }
-    localStorage.setItem("cursos", JSON.stringify(cursos));
+    //localStorage.setItem("cursos", JSON.stringify(cursos));
 
     renderizarTabela();
     fecharModal();
@@ -40,8 +52,11 @@ function salvarCurso(){
     
 }
 
-function renderizarTabela() {
-    
+async function renderizarTabela() {
+    const response = await fetch(API);
+
+    const cursos = await response.json();
+
     const tbody = document.getElementById("tabela-cursos-body");
     tbody.innerHTML = "";
 
@@ -49,10 +64,10 @@ function renderizarTabela() {
         tbody.innerHTML += `
             <tr>
                 <td>${curso.id}</td>
-                <td>${curso.nomec}</td>
-                <td>${getNomeDepartamento(curso.departamentoId)}</td>
+                <td>${curso.nome}</td>
+                <td>${curso.departamento.nome}</td>
                 <td>${curso.turno}</td>
-                <td>${curso.cargaHorariac}</td>
+                <td>${curso.cargaHoraria}</td>
                 <td>
                     <button onclick="editarCurso(${curso.id})" class="btn-editar" data-id="${curso.id}">Editar</button>
                     <button onclick="visualizarCurso(${curso.id})" class="btn-visualizar" data-id="${curso.id}">Visualizar</button>
@@ -100,14 +115,18 @@ document.addEventListener("click", function (e) {
     }   
 });
 
-function editarCurso(id) {
-    cursoSelecionadoId = id;
-    const curso = cursos.find(c => c.id === id);
+async function editarCurso(id) {
+    const response = await fetch(`${API}/${id}`);
+
+    const curso = await response.json();
     if (!curso) return;
 
-    document.getElementById("nomec").value = curso.nomec;
-    document.getElementById("departamentoModalDropdown").value = curso.departamentoId;
-    document.getElementById("cargaHorariac").value = curso.cargaHorariac;
+    cursoSelecionadoId = id;
+
+
+    document.getElementById("nomec").value = curso.nome;
+    document.getElementById("departamentoModalDropdown").value = curso.departamento.nome;
+    document.getElementById("cargaHorariac").value = curso.cargaHoraria;
     document.getElementById("turnoDropdown").value = curso.turno;
     document.getElementById("periodosc").value = curso.periodos;
 
@@ -119,26 +138,31 @@ function editarCurso(id) {
     
 }
 
-function excluirCurso(id) {
-    const index = cursos.findIndex(curso => curso.id === id);
-    if (index === -1) return;
+async function excluirCurso(id) {
 
-    cursos.splice(index, 1);
+    await fetch(`${API}/${cursoSelecionadoId}`, {
+        method: "DELETE"
+    })
 
-    localStorage.setItem("cursos", JSON.stringify(cursos));
     document.getElementById("modal-visualizar-curso").style.display = "none";
 
     renderizarTabela();
 
 }
 
-function carregarDepartamentosDropdown(selectId) {
+async function carregarDepartamentosDropdown(selectId) {
+
+    const response = await fetch(API_DEP);
+    const departamentos = await response.json();
+
     const select = document.getElementById(selectId);
 
-    // limpa antes de preencher
-    select.innerHTML = '<option value="">Selecione um departamento</option>';
+    select.innerHTML = `
+        <option value="">Selecione um departamento</option>
+    `;
 
     departamentos.forEach(dep => {
+
         select.innerHTML += `
             <option value="${dep.id}">
                 ${dep.nome}
@@ -147,54 +171,39 @@ function carregarDepartamentosDropdown(selectId) {
     });
 }
 
-function visualizarCurso(id) {
-    const curso = cursos.find(c => c.id === id);
+async function visualizarCurso(id) {
+    const response = await fetch(`${API}/${id}`);
+    const curso = await response.json();
     if (!curso) return;
-
-    
 
     const modal = document.getElementById("modal-visualizar-curso");
 
     cursoSelecionadoId = id;
 
-    document.getElementById("visualizarNomeCurso").textContent = curso.nomec;
-    document.getElementById("visualizarDepartamentoCurso").textContent = getNomeDepartamento(curso.departamentoId);
-    document.getElementById("visualizarCargaHorariaCurso").textContent = curso.cargaHorariac;
+    document.getElementById("visualizarNomeCurso").textContent = curso.nome;
+    document.getElementById("visualizarDepartamentoCurso").textContent = curso.departamento.nome;
+    document.getElementById("visualizarCargaHorariaCurso").textContent = curso.cargaHoraria;
     document.getElementById("visualizarTurnoCurso").textContent = curso.turno;
     document.getElementById("visualizarPeriodosCurso").textContent = curso.periodos;
 
-    renderizarDisciplinasCurso(id);
+    const tbodyDisciplinas = document.getElementById("tabela-disciplinas-curso");
+    tbodyDisciplinas.innerHTML = "";
+
+    curso.disciplinas.forEach(d => {
+        tbodyDisciplinas.innerHTML += `
+            <tr>
+                <td>${d.id}</td>
+                <td>${d.nome}</td>
+                <td>-- </td> <!-- professor -->
+                <td>${d.periodo}</td>
+                <td>${d.cargaHoraria}</td>
+            </tr>
+        `;
+    });
 
     modal.style.display = "flex";
 }
 
-function renderizarDisciplinasCurso(id) {
-    cursoSelecionadoId = id;
-
-    const disciplinas = JSON.parse(localStorage.getItem("disciplinas")) || [];
-
-    const tbody = document.getElementById("tabela-disciplinas-curso");
-    tbody.innerHTML = "";
-
-    const disciplinasDoCurso = disciplinas.filter(d => d.cursoId == id);
-
-    if (disciplinasDoCurso.length === 0) {
-        tbody.innerHTML = ' <tr><td colspan="5">Nenhuma disciplina cadastrada</td></tr>';
-        return;
-    }
-
-    disciplinasDoCurso.forEach(d => {
-        tbody.innerHTML += `
-            <tr>
-                <td>${d.id}</td>
-                <td>${d.nomed}</td>
-                <td>-- </td> <!-- professor -->
-                <td>${d.periodod}</td>
-                <td>${d.cargahorariad}</td>
-            </tr>
-        `;
-    });
-}
 
 function getNomeDepartamento(id) {
     const departamentos = JSON.parse(localStorage.getItem("departamentos")) || [];
