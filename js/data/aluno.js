@@ -1,31 +1,11 @@
-const alunos = JSON.parse(localStorage.getItem("alunos")) || [];
+const API = "http://localhost:8080/alunos";
 
 let alunoSelecionadoId = null;
 let modoEdicaoAluno = false;
 
-function salvarAluno(){
+async function salvarAluno(){
 
-    if (modoEdicaoAluno) {
-
-        const aluno = alunos.find(a => a.id == alunoSelecionadoId);
-
-        if (aluno) {
-            aluno.nome = document.getElementById("nome").value;
-            aluno.cpf = document.getElementById("cpf").value;
-            aluno.genero = document.getElementById("generoDropdown").value;
-            aluno.email = document.getElementById("email").value;
-            aluno.telefone = document.getElementById("telefone").value;
-            aluno.dataNascimento = document.getElementById("dataNascimento").value;
-        }
-
-        modoEdicaoAluno = false;
-        
-        document.getElementById("btnSalvarAluno").textContent = "Cadastrar";
-        
-    } else {
-
-        const aluno = {
-            id: Date.now(),
+    const aluno = {
             nome: document.getElementById("nome").value,
             cpf: document.getElementById("cpf").value,
             genero: document.getElementById("generoDropdown").value,
@@ -33,13 +13,33 @@ function salvarAluno(){
             telefone: document.getElementById("telefone").value,
             dataNascimento: document.getElementById("dataNascimento").value,
             cursoId: null,
-            status: "Ativo"
+            status: "ATIVO"
         };
 
-        alunos.push(aluno);
-    }
+    if (modoEdicaoAluno) {
 
-    localStorage.setItem("alunos", JSON.stringify(alunos));
+        await fetch(`${API}/${alunoSelecionadoId}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(aluno)
+        });
+
+        modoEdicaoAluno = false;
+        
+        document.getElementById("btnSalvarAluno").textContent = "Cadastrar";
+        
+    } else {
+
+        await fetch(API, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(aluno)
+        });
+    }
 
     renderizarTabela();
 
@@ -48,18 +48,24 @@ function salvarAluno(){
     limparFormulario();
 }
 
-function renderizarTabela() {
+async function renderizarTabela() {
+    
+    const response = await fetch(API);
+
+    const alunos = await response.json();
+
     const tbody = document.getElementById("tabela-alunos-body");
+    
     tbody.innerHTML = "";
 
     alunos.forEach(aluno => {
         tbody.innerHTML += `
             <tr>
                 <td>${aluno.id}</td>
-                <td>${aluno.nome}</td>
-                <td>${getNomeCurso(aluno.cursoId)}</td>
-                <td>${aluno.genero}</td>
-                <td>${aluno.status}</td>
+                <td>${aluno.pessoa.nome}</td>
+                <td>${aluno.getCurso}</td>
+                <td>${aluno.pessoa.genero}</td>
+                <td>${aluno.pessoa.status}</td>
                 <td>
                     <button onclick="editarAluno(${aluno.id})" class="btn-editar" data-id="${aluno.id}">Editar</button>
                     <button onclick="visualizarAluno(${aluno.id})" class="btn-visualizar" data-id="${aluno.id}">Visualizar</button>
@@ -95,35 +101,33 @@ document.addEventListener("click", function (e) {
 
 
 
-function visualizarAluno(id) {
-    const aluno = alunos.find(a => a.id === id);
-    if (!aluno) return;
+async function visualizarAluno(id) {
+
+    const response = await fetch(`${API}/${id}`);
+
+    const aluno = await response.json();
 
     const modal = document.getElementById("modal-visualizar-aluno");
 
     alunoSelecionadoId = id;
 
-    document.getElementById("visualizarNome").textContent = aluno.nome;
-    document.getElementById("visualizarCpf").textContent = aluno.cpf;
-    document.getElementById("visualizarGenero").textContent = aluno.genero;
-    document.getElementById("visualizarEmail").textContent = aluno.email;
-    document.getElementById("visualizarTelefone").textContent = aluno.telefone;
-    document.getElementById("visualizarDataNascimento").textContent = aluno.dataNascimento;
-    document.getElementById("visualizarStatus").textContent = aluno.status;
+    document.getElementById("visualizarNome").textContent = aluno.pessoa.nome;
+    document.getElementById("visualizarCpf").textContent = aluno.pessoa.cpf;
+    document.getElementById("visualizarGenero").textContent = aluno.pessoa.genero;
+    document.getElementById("visualizarEmail").textContent = aluno.pessoa.email;
+    document.getElementById("visualizarTelefone").textContent = aluno.pessoa.telefone;
+    document.getElementById("visualizarDataNascimento").textContent = aluno.pessoa.dataNascimento;
+    document.getElementById("visualizarStatus").textContent = aluno.pessoa.status;
 
     modal.style.display = "flex";
 
 }
 
-function excluirAluno(id) {
+async function excluirAluno(id) {
 
-    const index = alunos.findIndex(a => a.id === alunoSelecionadoId);
-    if (index !== - 1){
-        alunos.splice(index, 1);
-    }
-
-    localStorage.setItem("alunos", JSON.stringify(alunos));
-
+    await fetch(`${API}/${alunoSelecionadoId}`, {
+        method: "DELETE"
+    });
     document.getElementById("modal-visualizar-aluno").style.display = "none";
 
     renderizarTabela();
@@ -144,20 +148,26 @@ document.addEventListener("click", function (e) {
     }
 });
 
-function editarAluno(id) {
-    alunoSelecionadoId = id;
-    const aluno = alunos.find(a =>a.id == alunoSelecionadoId);
+async function editarAluno(id) {
+
+    const response = await fetch(`${API}/${id}`);
+
+    const aluno = await response.json();
     
     if (!aluno) return;
 
-    document.getElementById("nome").value = aluno.nome;
-    document.getElementById("cpf").value = aluno.cpf;
-    document.getElementById("generoDropdown").value = aluno.genero;
-    document.getElementById("email").value = aluno.email;
-    document.getElementById("telefone").value = aluno.telefone;
-    document.getElementById("dataNascimento").value = aluno.dataNascimento;
+    alunoSelecionadoId = id;
+
+    document.getElementById("visualizarNome").value = aluno.pessoa.nome;
+    document.getElementById("visualizarCpf").value = aluno.pessoa.cpf;
+    document.getElementById("visualizarGenero").value = aluno.pessoa.genero;
+    document.getElementById("visualizarEmail").value = aluno.pessoa.email;
+    document.getElementById("visualizarTelefone").value = aluno.pessoa.telefone;
+    document.getElementById("visualizarDataNascimento").value = aluno.pessoa.dataNascimento;
+    document.getElementById("visualizarStatus").value = aluno.pessoa.status;
 
     modoEdicaoAluno = true;
+
     document.getElementById("btnSalvarAluno").textContent = "Salvar";
 
     //OBSSS 

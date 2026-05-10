@@ -37,8 +37,6 @@ async function salvarDepartamento(){
     }
   
 
-    //localStorage.setItem("departamentos", JSON.stringify(departamentos));
-
     renderizarTabela();
 
     fecharModal();

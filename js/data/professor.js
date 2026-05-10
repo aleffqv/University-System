@@ -1,58 +1,43 @@
-const professores = JSON.parse(localStorage.getItem("professores")) || [];
-const departamentos = JSON.parse(localStorage.getItem("departamentos")) || [];
-
+const API = "http://localhost:8080/professores";
+const API_DEP = "http://localhost:8080/departamentos";
 
 let modoEdicao = false;
 let professorSelecionadoId = null;
 
-function salvarProfessor(){
+async function salvarProfessor() {
 
-    if (modoEdicao) {
-        const professor = professores.find(prof => prof.id === professorSelecionadoId);
+    const professor = {
 
-        if (professor) {
-            professor.nomep = document.getElementById("nomep").value;
-            professor.cpfp = document.getElementById("cpfp").value;
-            professor.generop = document.getElementById("generoDropdown").value;
-            professor.departamentoId = document.getElementById("departamentoDropdown").value;
-            professor.emailp = document.getElementById("emailp").value;
-            professor.telefonep = document.getElementById("telefonep").value;
-            professor.datanascimentop = document.getElementById("datanascimentop").value;
-            professor.especializacaop = document.getElementById("especializacaop").value;
-            professor.titulacaop = document.getElementById("titulacaop").value;
-        }
-        
-        modoEdicao = false;
+        nome: document.getElementById("nomep").value,
+        cpf: document.getElementById("cpfp").value,
+        genero: document.getElementById("generoDropdown").value,
+        email: document.getElementById("emailp").value,
+        telefone: document.getElementById("telefonep").value,
+        dataNascimento: document.getElementById("datanascimentop").value,
+        status: "ATIVO",
 
-        document.getElementById("btnSalvarProf").textContent = "Cadastrar";
+        especializacao: document.getElementById("especializacaop").value,
+        titulacao: document.getElementById("titulacaop").value,
 
-    } else {
-        const professor = {
-        id: Date.now(),
-        nomep: document.getElementById("nomep").value,
-        cpfp: document.getElementById("cpfp").value,
-        generop: document.getElementById("generoDropdown").value,
-        departamentoId: document.getElementById("departamentoProfDropdown").value,
-        emailp: document.getElementById("emailp").value,
-        telefonep: document.getElementById("telefonep").value,
-        datanascimentop: document.getElementById("datanascimentop").value,
-        especializacaop: document.getElementById("especializacaop").value,
-        titulacaop: document.getElementById("titulacaop").value,
-        turmaId: null
-        };
+        departamentoId:
+            document.getElementById("departamentoProfDropdown").value
+    };
 
-        if(!professor.departamentoId){
-            alert("Selecione um departamento!");
-            return;
-        }
+    await fetch(API, {
 
-        professores.push(professor);
-    }
+        method: "POST",
 
-    localStorage.setItem("professores", JSON.stringify(professores));
+        headers: {
+            "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify(professor)
+    });
 
     renderizarTabela();
+
     fecharModal();
+
     limparFormulario();
 }
 
@@ -64,7 +49,11 @@ document.addEventListener("click", function (e) {
 
 
 
-function renderizarTabela() {
+async function renderizarTabela() {
+
+    const response = await fetch(API);
+
+    const professores = await response.json();
     
     const tbody = document.getElementById("tabela-professores-body");
     tbody.innerHTML = "";
@@ -72,10 +61,10 @@ function renderizarTabela() {
         tbody.innerHTML += `
             <tr>
                 <td>${professor.id}</td>
-                <td>${professor.nomep}</td>
-                <td>${getNomeDepartamento(professor.departamentoId)}</td>
-                <td>${professor.generop}</td>
-                <td>${professor.titulacaop}</td>
+                <td>${professor.pessoa.nome}</td>
+                <td>${professor.departamento.nome}</td>
+                <td>${professor.pessoa.genero}</td>
+                <td>${professor.pessoa.status}</td>
                 <td>
                     <button onclick="editarProfessor(${professor.id})" class="btn-editar" data-id="${professor.id}">Editar</button>
                     <button onclick="visualizarProfessor(${professor.id})" class="btn-visualizar" data-id="${professor.id}">Visualizar</button>
@@ -85,13 +74,19 @@ function renderizarTabela() {
     });
 }
 
-function carregarDepartamentosDropdown(selectId) {
+async function carregarDepartamentosDropdown(selectId) {
+
+    const response = await fetch(API_DEP);
+    const departamentos = await response.json();
+
     const select = document.getElementById(selectId);
 
-    // limpa antes de preencher
-    select.innerHTML = '<option value="">Selecione um departamento</option>';
+    select.innerHTML = `
+        <option value="">Selecione um departamento</option>
+    `;
 
     departamentos.forEach(dep => {
+
         select.innerHTML += `
             <option value="${dep.id}">
                 ${dep.nome}
@@ -117,42 +112,39 @@ function fecharModal() {
 }
 
 
-function visualizarProfessor(id) {
+async function visualizarProfessor(id) {
 
-    const turmas = JSON.parse(localStorage.getItem("turmas")) || [];
-
-    const professor = professores.find(prof => prof.id === id);
+    const response = await fetch(`${API}/${id}`);
+    const professor = await response.json();
     if (!professor) return;
 
     const modal = document.getElementById("modal-visualizar-professor");
 
     professorSelecionadoId = id; //necessario para a função de excluir
 
-    document.getElementById("visualizarNomeP").textContent = professor.nomep;
-    document.getElementById("visualizarCpfP").textContent = professor.cpfp;
-    document.getElementById("visualizarGeneroP").textContent = professor.generop;
-    document.getElementById("visualizarEmailP").textContent = professor.emailp;
-    document.getElementById("visualizarTelefoneP").textContent = professor.telefonep;
-    document.getElementById("visualizarDataNascimentoP").textContent = professor.datanascimentop;
-    document.getElementById("visualizarEspecializacaoP").textContent = professor.especializacaop;
-    document.getElementById("visualizarTitulacaoP").textContent = professor.titulacaop;
-
-    const turmasDoProfessor = turmas.filter(t => t.professorId == professorSelecionadoId);
+    document.getElementById("visualizarNomeP").textContent = professor.pessoa.nome;
+    document.getElementById("visualizarCpfP").textContent = professor.pessoa.cpf;
+    document.getElementById("visualizarGeneroP").textContent = professor.pessoa.genero;
+    document.getElementById("visualizarEmailP").textContent = professor.pessoa.email;
+    document.getElementById("visualizarTelefoneP").textContent = professor.pessoa.telefone;
+    document.getElementById("visualizarDataNascimentoP").textContent = professor.pessoa.datanascimento;
+    document.getElementById("visualizarEspecializacaoP").textContent = professor.pessoa.especialidade;
+    document.getElementById("visualizarTitulacaoP").textContent = professor.pessoa.titulacao;
 
     const tbodyTurmas = document.getElementById("tabela-professores-turma");
     tbodyTurmas.innerHTML = "";
 
-    turmasDoProfessor.forEach(turma => {
+    professor.turmas.forEach(turma => {
         tbodyTurmas.innerHTML += `
             <tr>
                 <td>${turma.id}</td>
-                <td>${turma.nomet} </td>
-                <td>${getNomeDisciplina(turma.disciplinaId)}</td>
-                <td>${getNomeCurso(turma.cursoId)}</td>
-                <td>${getNomeProfessor(turma.professorId)}</td>
-                <td>${turma.salat}</td>
-                <td>${turma.horariot}</td>
-                <td>${turma.nvagast}</td>
+                <td>${turma.nome} </td>
+                <td>${turma.disciplina}</td>
+                <td>${turma.disciplina.curso}</td>
+                <td>${turma.professor}</td>
+                <td>${turma.sala}</td>
+                <td>${turma.horario}</td>
+                <td>${turma.nvagas}</td>
             </tr>
         `;
     });
@@ -178,38 +170,61 @@ document.addEventListener("click", function (e) {
 
 
 
-function excluirProfessor(id) {
-    const index = professores.findIndex(prof => prof.id === professorSelecionadoId);
-    if (index !== -1) {
-        professores.splice(index, 1);
-    }
+async function excluirProfessor(id) {
+    
+    await fetch(`${API}/${professorSelecionadoId}`, {
+        method: "DELETE"
+    })
 
-    localStorage.setItem("professores", JSON.stringify(professores));
     document.getElementById("modal-visualizar-professor").style.display = "none";   
 
     renderizarTabela();
 }
 
-function editarProfessor(id) {
-    professorSelecionadoId = id;
-    const professor = professores.find(prof => prof.id === professorSelecionadoId); 
+async function editarProfessor(id) {
+
+    const response = await fetch(`${API}/${id}`);
+
+    const professor = await response.json();
+
     if (!professor) return;
-    document.getElementById("nomep").value = professor.nomep;
-    document.getElementById("cpfp").value = professor.cpfp;
-    document.getElementById("generoDropdown").value = professor.generop;
-    document.getElementById("emailp").value = professor.emailp;
-    document.getElementById("telefonep").value = professor.telefonep;
-    document.getElementById("datanascimentop").value = professor.datanascimentop;
-    document.getElementById("especializacaop").value = professor.especializacaop;
-    document.getElementById("titulacaop").value = professor.titulacaop;
+
+    professorSelecionadoId = id;
+
+    document.getElementById("nomep").value =
+        professor.pessoa.nome;
+
+    document.getElementById("cpfp").value =
+        professor.pessoa.cpf;
+
+    document.getElementById("generoDropdown").value =
+        professor.pessoa.genero;
+
+    document.getElementById("emailp").value =
+        professor.pessoa.email;
+
+    document.getElementById("telefonep").value =
+        professor.pessoa.telefone;
+
+    document.getElementById("datanascimentop").value =
+        professor.pessoa.dataNascimento;
+
+    document.getElementById("especializacaop").value =
+        professor.especializacao;
+
+    document.getElementById("titulacaop").value =
+        professor.titulacao;
+
+    document.getElementById("departamentoProfDropdown").value =
+        professor.departamento.id;
+
     modoEdicao = true;
 
     document.getElementById("btnSalvarProf").textContent = "Salvar";
 
     document.getElementById("modal-visualizar-professor").style.display = "none";
+
     document.getElementById("modal-professor").style.display = "flex";
-
-
 }
 
 function getNomeCurso(id){
@@ -238,6 +253,13 @@ function getNomeProfessor(id){
     return professor ? professor.nomep: "Nenhum professor encontrado"
 
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    carregarDepartamentosDropdown("departamentoProfDropdown");
+
+    renderizarTabela();
+});
 
 //precisa ficar no final do arquivo para sempre ser recarregada, evita erros de salvar e não aparecer a tabela atualizada 
 renderizarTabela();
