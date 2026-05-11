@@ -44,8 +44,7 @@ async function salvarCurso(){
             body: JSON.stringify(curso)
         });
     }
-    //localStorage.setItem("cursos", JSON.stringify(cursos));
-
+    
     renderizarTabela();
     fecharModal();
     limparFormulario();

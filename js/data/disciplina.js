@@ -1,33 +1,47 @@
-const disciplinas = JSON.parse(localStorage.getItem("disciplinas")) || [];
-const cursos = JSON.parse(localStorage.getItem("cursos")) || [];
+const API = "http://localhost:8080/disciplinas";
+const API_CURSOS = "http://localhost:8080/cursos";
 
 let modoEdicao = false;
 let disciplinaSelecionadaId = null;
 
-function salvarDisciplina(){
-    if (modoEdicao) {
-        const disciplina = disciplinas.find(d => d.id === disciplinaSelecionadaId);
-        if (disciplina) {
-            disciplina.nomed = document.getElementById("nomed").value;
-            disciplina.cargahorariad = document.getElementById("cargahorariad").value;
-            disciplina.cursoId = document.getElementById("cursoModalDropdown").value;
-            disciplina.periodod = document.getElementById("periodod").value;
-        }
+async function salvarDisciplina(){
 
-        modoEdicao = false;
-    } else {
-        const disciplina = {
-            id: Date.now(),
-            nomed: document.getElementById("nomed").value,
-            cargahorariad: document.getElementById("cargahorariad").value,
+    const disciplina = {
+            nome: document.getElementById("nomed").value,
+            cargaHoraria: document.getElementById("cargahorariad").value,
             cursoId: document.getElementById("cursoModalDropdown").value,
-            periodod: document.getElementById("periodod").value
+            periodo: document.getElementById("periodod").value
         };
 
-        disciplinas.push(disciplina);
+    if (modoEdicao) {
+        
+            await fetch(`${API}/${disciplinaSelecionadaId}`, {
+
+            method: "PUT",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify(disciplina)
+        });   
+
+        modoEdicao = false;
+
+    } else {
+        await fetch(API, {
+
+            method: "POST",
+
+            headers: {
+                "Content-Type": "application/json"
+            },
+
+            body: JSON.stringify(disciplina)
+        });
+
     }
 
-    localStorage.setItem("disciplinas", JSON.stringify(disciplinas));
     renderizarTabela();
     fecharModal();
     limparFormulario();
@@ -40,7 +54,10 @@ document.addEventListener("click", function (e) {
 });
 
 
-function renderizarTabela() {
+async function renderizarTabela() {
+    const response = await fetch(API);
+
+    const disciplinas = await response.json();
     
     const tbody = document.getElementById("tabela-disciplinas-body");
     tbody.innerHTML = "";
@@ -49,10 +66,10 @@ function renderizarTabela() {
         tbody.innerHTML += `
             <tr>
                 <td>${disciplina.id}</td>
-                <td>${disciplina.nomed}</td>
-                <td>${getNomeCurso(disciplina.cursoId)}</td>
-                <td>${disciplina.cargaHorariad}</td>
-                <td>${disciplina.periodod}</td>
+                <td>${disciplina.nome}</td>
+                <td>${disciplina.curso.nome}</td>
+                <td>${disciplina.cargaHoraria}</td>
+                <td>${disciplina.periodo}</td>
                 <td>
                     <button onclick="editarDisciplina(${disciplina.id})" class="btn-editar" data-id="${disciplina.id}">Editar</button>
                     <button onclick="visualizarDisciplina(${disciplina.id})" class="btn-visualizar" data-id="${disciplina.id}">Visualizar</button>
@@ -77,7 +94,11 @@ function fecharModal() {
     document.getElementById("btnSalvarDisciplina").textContent = "Cadastrar"; 
 }
 
-function carregarCursoDropdown(selectId) {
+async function carregarCursoDropdown(selectId) {
+
+    const response = await fetch(API_CURSOS);
+    const cursos = await response.json();
+
     const select = document.getElementById(selectId);
 
     // limpa antes de preencher
@@ -86,20 +107,25 @@ function carregarCursoDropdown(selectId) {
     cursos.forEach(curso => {
         select.innerHTML += `
             <option value="${curso.id}">
-                ${curso.nomec}
+                ${curso.nome}
             </option>
         `;
     });
 }
 
-function editarDisciplina(id) {
-    disciplinaSelecionadaId = id;
-    const disciplina = disciplinas.find(d => d.id == id);
+async function editarDisciplina(id) {
+    
+    const response = await fetch(`${API}/${id}`);
+
+    const disciplina = await response.json();
     if (!disciplina) return;
-    document.getElementById("nomed").value = disciplina.nomed;
-    document.getElementById("cargahorariad").value = disciplina.cargaHorariad;
-    document.getElementById("cursoModalDropdown").value = disciplina.cursoId;
-    document.getElementById("periodod").value = disciplina.periodod;
+
+    disciplinaSelecionadaId = id;
+
+    document.getElementById("nomed").value = disciplina.nome;
+    document.getElementById("cargahorariad").value = disciplina.cargaHoraria;
+    document.getElementById("cursoModalDropdown").value = disciplina.curso.nome;
+    document.getElementById("periodod").value = disciplina.periodo;
 
     modoEdicao = true;
     document.getElementById("btnSalvarDisciplina")
@@ -107,24 +133,36 @@ function editarDisciplina(id) {
     document.getElementById("modal-disciplina").style.display = "flex";
 }
 
-function visualizarDisciplina(id){
+async function visualizarDisciplina(id){
     
     
-    const disciplina = disciplinas.find(d => d.id === id);
+    const response = await fetch(`${API}/${id}`);
+
+    const disciplina = await response.json();
     if (!disciplina) return;
 
     const modal = document.getElementById("modal-visualizar-disciplina");
 
     disciplinaSelecionadaId = id;
-    console.log("txt id disciplina: " + disciplinaSelecionadaId);
 
-    document.getElementById("visualizarNomeDisciplina").textContent = disciplina.nomed;
-    //docume
-    document.getElementById("visualizarCargaHorariaDisciplina").textContent = disciplina.cargaHorariad;
-    document.getElementById("visualizarCursoDisciplina").textContent = getNomeCurso(disciplina.cursoId);
-    document.getElementById("visualizarPeriodosDisciplina").textContent = disciplina.periodod;
+    document.getElementById("visualizarNomeDisciplina").textContent = disciplina.nome;
+    document.getElementById("visualizarCargaHorariaDisciplina").textContent = disciplina.cargaHoraria;
+    document.getElementById("visualizarCursoDisciplina").textContent = disciplina.curso.nome;
+    document.getElementById("visualizarPeriodosDisciplina").textContent = disciplina.periodo;
 
     modal.style.display = "flex";
+}
+
+async function excluirDisciplina(id) {
+
+    await fetch(`${API}/${disciplinaSelecionadaId}`, {
+        method: "DELETE"
+    });
+
+    document.getElementById("modal-visualizar-disciplina").style.display = "none";
+
+    renderizarTabela();
+    
 }
 
 
