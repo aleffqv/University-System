@@ -9,7 +9,7 @@ let turmaSelecionadaId = null;
 async function salvarTurma() {
 
     const turma = {
-        nome: "Turma -" + new Date().getFullYear(),
+        nome: "Turma - " + new Date().getFullYear(),
         disciplinaId:document.getElementById("disciplinaTDropdown").value,
         professorId:document.getElementById("professorTDropdown").value,
         sala:document.getElementById("salat").value,
@@ -67,6 +67,8 @@ async function renderizarTabelaTurmas() {
     const turmas = await response.json();
 
     const tbody = document.getElementById("tabela-turmas-body");
+
+    if (!tbody) return;
 
     tbody.innerHTML = "";
 

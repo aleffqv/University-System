@@ -1,4 +1,5 @@
-const API = "http://localhost:8080/alunos";
+const API_ALUNOS = "http://localhost:8080/alunos";
+const API_CURSOS = "http://localhost:8080/cursos";
 
 let alunoSelecionadoId = null;
 let modoEdicaoAluno = false;
@@ -18,7 +19,7 @@ async function salvarAluno(){
 
     if (modoEdicaoAluno) {
 
-        await fetch(`${API}/${alunoSelecionadoId}`, {
+        await fetch(`${API_ALUNOS}/${alunoSelecionadoId}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json"
@@ -32,7 +33,7 @@ async function salvarAluno(){
         
     } else {
 
-        await fetch(API, {
+        await fetch(API_ALUNOS, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -50,7 +51,7 @@ async function salvarAluno(){
 
 async function renderizarTabela() {
     
-    const response = await fetch(API);
+    const response = await fetch(API_ALUNOS);
 
     const alunos = await response.json();
 
@@ -63,7 +64,7 @@ async function renderizarTabela() {
             <tr>
                 <td>${aluno.id}</td>
                 <td>${aluno.pessoa.nome}</td>
-                <td>${aluno.getCurso}</td>
+                <td>${aluno.curso ? aluno.curso.nome : "Sem curso"}</td>
                 <td>${aluno.pessoa.genero}</td>
                 <td>${aluno.pessoa.status}</td>
                 <td>
@@ -125,7 +126,7 @@ async function visualizarAluno(id) {
 
 async function excluirAluno(id) {
 
-    await fetch(`${API}/${alunoSelecionadoId}`, {
+    await fetch(`${API_ALUNOS}/${alunoSelecionadoId}`, {
         method: "DELETE"
     });
     document.getElementById("modal-visualizar-aluno").style.display = "none";
@@ -150,7 +151,7 @@ document.addEventListener("click", function (e) {
 
 async function editarAluno(id) {
 
-    const response = await fetch(`${API}/${id}`);
+    const response = await fetch(`${API_ALUNOS}/${id}`);
 
     const aluno = await response.json();
     
@@ -178,26 +179,15 @@ async function editarAluno(id) {
 }
 
 
-function matricularAlunoCurso(alunoId, cursoId){
-    const alunos = JSON.parse(localStorage.getItem("alunos")) || [];
+async function matricularAlunoCurso(alunoId, cursoId) {
 
-    const aluno = alunos.find(a => a.id == alunoId);
+    await fetch(`${API_ALUNOS}/${alunoId}/curso/${cursoId}`, {
+        method: "PUT"
+    });
 
-    if(aluno.cursoId){
-        alert("Aluno já matriculado em algum curso");
-        return;
-    }
+    alert("Aluno matriculado no curso!");
 
-    if(aluno.cursoId === cursoId){
-        alert("Aluno já matriculado nesse curso");
-        return;
-    }
-
-    aluno.cursoId = cursoId;
-
-    localStorage.setItem("alunos", JSON.stringify(alunos));
     renderizarTabela();
-    alert("Aluno matriculado com sucesso!");
 }
 
 //botao matr curso
@@ -211,73 +201,68 @@ document.addEventListener("click", function(e){
     }
 });
 
-function carregarAlunosDropdown(selectId) {
+async function carregarAlunosDropdown(selectId) {
+
+    const response = await fetch(API_ALUNOS);
+
+    const alunos = await response.json();
+
     const select = document.getElementById(selectId);
-    const alunos = JSON.parse(localStorage.getItem("alunos")) || [];
 
     select.innerHTML = '<option value="">Selecione um aluno</option>';
 
     alunos.forEach(a => {
         select.innerHTML += `
             <option value="${a.id}">
-                ${a.nome} - ${getNomeCurso(a.cursoId)}
+                ${a.pessoa.nome}
             </option>
         `;
     });
 }
 
-function carregarCursosDropdown(selectId) {
+async function carregarCursosDropdown(selectId) {
+
+    const response = await fetch(API_CURSOS);
+
+    const cursos = await response.json();
+
     const select = document.getElementById(selectId);
-    const cursos = JSON.parse(localStorage.getItem("cursos")) || [];
 
     select.innerHTML = '<option value="">Selecione um curso</option>';
 
     cursos.forEach(c => {
         select.innerHTML += `
             <option value="${c.id}">
-                ${c.nomec}
+                ${c.nome}
             </option>
         `;
     });
 }
 
-function getNomeCurso(id){
-    const cursos = JSON.parse(localStorage.getItem("cursos")) || [];
-    const curso = cursos.find(c => c.id == id);
-    return curso ? curso.nomec: "Nenhum curso encontrado"
+async function carregarTurmasAlunoDropdown(selectId, alunoId) {
 
-}
+    const responseAlunos = await fetch(`${API_ALUNOS}/${alunoId}`);
+    const aluno = await responseAlunos.json();
 
+    const responseTurmas = await fetch("http://localhost:8080/turmas");
+    const turmas = await responseTurmas.json();
 
-function carregarTurmasAlunoDropdown(selectId, alunoId) {
-    
     const select = document.getElementById(selectId);
-    const alunos = JSON.parse(localStorage.getItem("alunos")) || [];
-    const turmas = JSON.parse(localStorage.getItem("turmas")) || [];
 
-    if (!alunoId) {
-    select.innerHTML = '<option value="">Selecione um aluno primeiro</option>';
-    return;
-    }
-
-    //procura o aluno, pega do dropdown
-    const aluno = alunos.find(a => a.id == alunoId);
-
-    //confere se o aluno existe e está em um curso
-    if (!aluno || !aluno.cursoId){
-        select.innerHTML = '<option value="">Selecione um aluno com curso</option>';
+    if (!aluno.curso) {
+        select.innerHTML = '<option value="">Selecione um aluno primeiro</option>';
         return;
     }
 
     //vai filtrar pelos cursos
-    const turmasFilter = turmas.filter(t => t.cursoId === aluno.cursoId);
+    const turmasFilter = turmas.filter(t => t.disciplina.curso.id === aluno.curso.id);
 
     select.innerHTML = '<option value="">Selecione uma turma</option>';
 
     turmasFilter.forEach(t => {
         select.innerHTML += `
             <option value="${t.id}">
-                ${t.nomet} - ${getNomeDisciplina(t.disciplinaId)}
+                ${t.nome} - ${t.disciplina.nome}
             </option>
         `;
     });
@@ -287,25 +272,23 @@ function carregarTurmasAlunoDropdown(selectId, alunoId) {
 document.addEventListener("DOMContentLoaded", function () {
 
     carregarAlunosDropdown("alunoDropdown");
+
     carregarAlunosDropdown("alunoTurmaDropdown");
+
     carregarCursosDropdown("cursoMatriculaDropdown");
 
-    const alunoSelect = document.getElementById("alunoTurmaDropdown");
+    const alunoSelect =
+        document.getElementById("alunoTurmaDropdown");
 
     alunoSelect.addEventListener("change", function () {
-        const alunoId = this.value;
 
-        carregarTurmasAlunoDropdown("turmaDropdown", alunoId);
+        carregarTurmasAlunoDropdown(
+            "turmaDropdown",
+            this.value
+        );
     });
-
 });
 
-function getNomeDisciplina(id){
-    const disciplinas = JSON.parse(localStorage.getItem("disciplinas")) || [];
-    const disciplina = disciplinas.find(d => d.id == id);
-    return disciplina ? disciplina.nomed: "Nenhuma disciplina encontrada"
-
-}
 
 // Só executa se a página tiver a tabela de alunos
 if (document.getElementById("tabela-alunos-body")) {

@@ -1,116 +1,141 @@
-const matriculas = JSON.parse(localStorage.getItem("matriculas")) || [];
+const API_MATRICULAS = "http://localhost:8080/matriculas";
+const API_ALUNOS_MATRICULA = "http://localhost:8080/alunos";
+const API_TURMAS_MATRICULA = "http://localhost:8080/turmas";
 
-function matricularAlunoTurma(alunoId, turmaId){
 
-    
-    const alunos = JSON.parse(localStorage.getItem("alunos")) || [];
-    const turmas = JSON.parse(localStorage.getItem("turmas")) || [];
+async function salvarMatricula() {
 
-    const aluno = alunos.find(a => a.id == alunoId);
-    const turma = turmas.find(t => t.id == turmaId);
+    const matricula = {
 
-    if (!aluno || !turma) return;
+        alunoId:
+            document.getElementById(
+                "alunoTurmaDropdown"
+            ).value,
 
-    if (!aluno.cursoId) {
-        alert("Aluno não está matriculado em um curso!");
-        return;
-    }
+        turmaId:
+            document.getElementById(
+                "turmaDropdown"
+            ).value,
 
-    
-    if (aluno.cursoId != turma.cursoId) {
-        alert("Aluno não pertence a este curso!");
-        return;
-    }
-
-    
-    const jaExiste = matriculas.find(m =>
-        m.alunoId == alunoId && m.turmaId == turmaId
-    );
-
-    if (jaExiste) {
-        alert("Aluno já está matriculado nessa turma!");
-        return;
-    }
-
-    
-    const matriculadosNaTurma = matriculas.filter(m => m.turmaId == turmaId);
-
-    if (matriculadosNaTurma.length >= turma.nvagast) {
-        alert("Turma lotada!");
-        return;
-    }
-
-    
-    const novaMatricula = {
-        id: Date.now(),
-        alunoId,
-        turmaId,
-        data: new Date().toLocaleDateString()
+        dataMatricula:
+            new Date().toISOString().split("T")[0]
     };
 
-    matriculas.push(novaMatricula);
+    await fetch(API_MATRICULAS, {
 
-    localStorage.setItem("matriculas", JSON.stringify(matriculas));
+        method: "POST",
+
+        headers: {
+            "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify(matricula)
+    });
+
+    renderizarTabelaMatriculas();
 
     alert("Matrícula realizada com sucesso!");
-    renderizarTabelaMatriculas();
 }
 
-function renderizarTabelaMatriculas() {
-    
-    const tbody = document.getElementById("tabela-matriculas-body");
-    if(!tbody) return;
+async function renderizarTabelaMatriculas() {
 
-    const matriculas = JSON.parse(localStorage.getItem("matriculas")) || [];
-    const cursos = JSON.parse(localStorage.getItem("cursos")) || [];
-    const alunos = JSON.parse(localStorage.getItem("alunos")) || [];
-    const turmas = JSON.parse(localStorage.getItem("turmas")) || [];
+    const response = await fetch(API_MATRICULAS);
+
+    const matriculas = await response.json();
+
+    const tbody =
+        document.getElementById(
+            "tabela-matriculas-body"
+        );
+
+    if (!tbody) return;
 
     tbody.innerHTML = "";
-    matriculas.forEach(matricula => {
-        const aluno = alunos.find(a => a.id == matricula.alunoId);
-        const turma = turmas.find(t => t.id == matricula.turmaId);
-        const curso = cursos.find(c => c.id == turma.cursoId);
 
+    matriculas.forEach(matricula => {
+        console.log(matricula);
         tbody.innerHTML += `
             <tr>
                 <td>${matricula.id}</td>
-                <td>${aluno.nome}</td>
-                <td>${turma.nomet} - ${getNomeDisciplina(turma.disciplinaId)}</td>
-                <td>${curso.nomec}</td>
-                <td>${matricula.data}</td>
+                <td>${matricula.aluno.pessoa.nome}</td>
+                <td>${matricula.aluno.curso.nome}</td>
+                <td>${matricula.turma.disciplina.nome}</td>
+                <td>${matricula.turma.disciplina.curso.nome}</td>
+                <td>${matricula.dataMatricula}</td>
                 <td>
-                    <button onclick="editarMatricula(${matricula.id})" class="btn-editar" data-id="${matricula.id}">Editar</button>
-                    <button onclick="visualizarMatricula(${matricula.id})" class="btn-visualizar" data-id="${matricula.id}">Visualizar</button>
+                    <button onclick="editarMatricula(${matricula.id})"class="btn-editar">Editar</button>
+                    <button onclick="visualizarMatricula(${matricula.id})"class="btn-visualizar">Visualizar</button>
                 </td>
             </tr>
         `;
     });
 }
 
+ async function carregarAlunosDropdown() {
+
+     const response =
+         await fetch(API_ALUNOS_MATRICULA);
+     const alunos =
+         await response.json();
+     const select =
+         document.getElementById(
+             "alunoTurmaDropdown"
+         );
+
+    if (!select) return;
+     alunos.forEach(aluno => {
+         select.innerHTML += `
+             <option value="${aluno.id}">
+                 ${aluno.pessoa.nome}
+             </option>
+         `;
+     });
+ }
+
+async function carregarTurmasDropdown() {
+
+    const response =
+        await fetch(API_TURMAS_MATRICULA);
+
+    const turmas =
+        await response.json();
+
+    const select =
+        document.getElementById(
+            "turmaDropdown"
+        );
+
+    if (!select) return;
+
+    select.innerHTML =
+        '<option value="">Selecione uma turma</option>';
+
+    turmas.forEach(turma => {
+
+        select.innerHTML += `
+            <option value="${turma.id}">
+                ${turma.nome}
+                -
+                ${turma.disciplina.nome}
+            </option>
+        `;
+    });
+}
+
 document.addEventListener("click", function(e){
-    if(e.target && e.target.id === "btnMatricularTurma"){
-        const alunoId = document.getElementById("alunoTurmaDropdown").value;
-        const turmaId = document.getElementById("turmaDropdown").value;
 
-        if(!alunoId || !turmaId){
-            alert("Selecione um aluno e uma turma para matricular!");
-            return;
-        }
+    if(e.target &&
+       e.target.id === "btnMatricularTurma") {
 
-        
-        matricularAlunoTurma(alunoId, turmaId);
+        salvarMatricula();
     }
 });
 
-function getNomeDisciplina(id){
-    const disciplinas = JSON.parse(localStorage.getItem("disciplinas")) || [];
-    const disciplina = disciplinas.find(d => d.id == id);
-    return disciplina ? disciplina.nomed: "Nenhuma disciplina encontrada"
+document.addEventListener("DOMContentLoaded", () => {
 
-}
+     carregarAlunosDropdown();
 
-// Só executa se a página tiver a tabela de matrículas
-if (document.getElementById("tabela-matriculas-body")) {
+    carregarTurmasDropdown();
+
     renderizarTabelaMatriculas();
-}
+});
