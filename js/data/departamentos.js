@@ -123,6 +123,8 @@ async function visualizarDepartamento(id) {
     //carrega a tabela de cursos do departamento dentro do modal
     const tbody = document.getElementById("tabela-cursos-dep-body");
 
+    if(!tbody) return;
+
     tbody.innerHTML = "";
 
     //constroi a tabela de cursos do departamento

@@ -150,6 +150,22 @@ async function visualizarDisciplina(id){
     document.getElementById("visualizarCursoDisciplina").textContent = disciplina.curso.nome;
     document.getElementById("visualizarPeriodosDisciplina").textContent = disciplina.periodo;
 
+    const tbody = document.getElementById("tabela-turmas-disciplinas");
+    if(!tbody) return;
+    tbody.innerHTML = "";
+
+    disciplina.turmas.forEach(turma => {
+        tbody.innerHTML += `
+            <tr>
+                <td>${turma.id}</td>
+                <td>${turma.nome}</td>
+                <td>${turma.professor.pessoa.nome}</td>
+                <td>${turma.sala}</td>
+                <td>${turma.horario}</td>
+            </tr>
+        `;
+    });
+
     modal.style.display = "flex";
 }
 

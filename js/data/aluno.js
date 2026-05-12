@@ -104,7 +104,7 @@ document.addEventListener("click", function (e) {
 
 async function visualizarAluno(id) {
 
-    const response = await fetch(`${API}/${id}`);
+    const response = await fetch(`${API_ALUNOS}/${id}`);
 
     const aluno = await response.json();
 
@@ -159,13 +159,12 @@ async function editarAluno(id) {
 
     alunoSelecionadoId = id;
 
-    document.getElementById("visualizarNome").value = aluno.pessoa.nome;
-    document.getElementById("visualizarCpf").value = aluno.pessoa.cpf;
-    document.getElementById("visualizarGenero").value = aluno.pessoa.genero;
-    document.getElementById("visualizarEmail").value = aluno.pessoa.email;
-    document.getElementById("visualizarTelefone").value = aluno.pessoa.telefone;
-    document.getElementById("visualizarDataNascimento").value = aluno.pessoa.dataNascimento;
-    document.getElementById("visualizarStatus").value = aluno.pessoa.status;
+    document.getElementById("nome").value = aluno.pessoa.nome;
+    document.getElementById("cpf").value = aluno.pessoa.cpf;
+    document.getElementById("generoDropdown").value = aluno.pessoa.genero;
+    document.getElementById("email").value = aluno.pessoa.email;
+    document.getElementById("telefone").value = aluno.pessoa.telefone;
+    document.getElementById("dataNascimento").value = aluno.pessoa.dataNascimento;
 
     modoEdicaoAluno = true;
 
@@ -201,6 +200,7 @@ document.addEventListener("click", function(e){
     }
 });
 
+
 async function carregarAlunosDropdown(selectId) {
 
     const response = await fetch(API_ALUNOS);
@@ -208,6 +208,8 @@ async function carregarAlunosDropdown(selectId) {
     const alunos = await response.json();
 
     const select = document.getElementById(selectId);
+
+    if (!select) return;
 
     select.innerHTML = '<option value="">Selecione um aluno</option>';
 

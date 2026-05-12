@@ -71,7 +71,7 @@ async function renderizarTabelaMatriculas() {
     });
 }
 
- async function carregarAlunosDropdown() {
+ async function carregarAlunosDropdownMatricula() {
 
      const response =
          await fetch(API_ALUNOS_MATRICULA);
@@ -133,7 +133,7 @@ document.addEventListener("click", function(e){
 
 document.addEventListener("DOMContentLoaded", () => {
 
-     carregarAlunosDropdown();
+    carregarAlunosDropdownMatricula();
 
     carregarTurmasDropdown();
 

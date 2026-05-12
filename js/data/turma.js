@@ -140,11 +140,11 @@ async function visualizarTurma(id) {
 
         tbodyAlunos.innerHTML += `
             <tr>
-                <td>${aluno.id}</td>
-                <td>${aluno.nome}</td>
+                <td>${aluno.pessoa.id}</td>
+                <td>${aluno.pessoa.nome}</td>
                 <td>${aluno.curso.nome}</td>
-                <td>${aluno.genero}</td>
-                <td>${aluno.status}</td>
+                <td>${aluno.pessoa.genero}</td>
+                <td>${aluno.pessoa.status}</td>
             </tr>
         `;
     });
