@@ -42,6 +42,7 @@ async function renderizarTabelaMatriculas() {
     const response = await fetch(API_MATRICULAS);
 
     const matriculas = await response.json();
+    console.log(matriculas);
 
     const tbody =
         document.getElementById(

@@ -155,7 +155,7 @@ async function visualizarProfessor(id) {
     const tbodyTurmas = document.getElementById("tabela-professores-turma");
     tbodyTurmas.innerHTML = "";
 
-    professor.turmas.forEach(turma => {
+    professor.pessoa.turmas.forEach(turma => {
         tbodyTurmas.innerHTML += `
             <tr>
                 <td>${turma.id}</td>

@@ -65,7 +65,7 @@ async function renderizarTabelaTurmas() {
     const response = await fetch(API);
 
     const turmas = await response.json();
-
+    console.log(turmas);
     const tbody = document.getElementById("tabela-turmas-body");
 
     if (!tbody) return;
@@ -113,7 +113,7 @@ async function visualizarTurma(id) {
 
     document.getElementById("visualizarNomeTurma").textContent =
         turma.nome;
-
+    console.log(turma);
     document.getElementById("visualizarCursoTurma").textContent =
         turma.disciplina.curso.nome;
 
