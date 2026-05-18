@@ -80,18 +80,18 @@ async function renderizarTabela() {
     tbody.innerHTML = "";
         professores.forEach(professor => {
         tbody.innerHTML += `
-            <tr>
-                <td>${professor.id}</td>
-                <td>${professor.pessoa.nome}</td>
-                <td>${professor.departamento.nome}</td>
-                <td>${professor.pessoa.genero}</td>
-                <td>${professor.pessoa.status}</td>
-                <td>
-                    <button onclick="editarProfessor(${professor.id})" class="btn-editar" data-id="${professor.id}">Editar</button>
-                    <button onclick="visualizarProfessor(${professor.id})" class="btn-visualizar" data-id="${professor.id}">Visualizar</button>
-                </td>
-            </tr>
-        `;
+                <tr>
+                    <td>${professor.id}</td>
+                    <td>${professor.nome || ''}</td>
+                    <td>${professor.departamentoNome || ''}</td>
+                    <td>${professor.genero || ''}</td>
+                    <td>${professor.status || ''}</td>
+                    <td>
+                        <button onclick="editarProfessor(${professor.id})" class="btn-editar">Editar</button>
+                        <button onclick="visualizarProfessor(${professor.id})" class="btn-visualizar">Visualizar</button>
+                    </td>
+                </tr>
+            `;
     });
 }
 
@@ -143,31 +143,31 @@ async function visualizarProfessor(id) {
 
     professorSelecionadoId = id; //necessario para a função de excluir
 
-    document.getElementById("visualizarNomeP").textContent = professor.pessoa.nome;
-    document.getElementById("visualizarCpfP").textContent = professor.pessoa.cpf;
-    document.getElementById("visualizarGeneroP").textContent = professor.pessoa.genero;
-    document.getElementById("visualizarEmailP").textContent = professor.pessoa.email;
-    document.getElementById("visualizarTelefoneP").textContent = professor.pessoa.telefone;
-    document.getElementById("visualizarDataNascimentoP").textContent = professor.pessoa.datanascimento;
-    document.getElementById("visualizarEspecializacaoP").textContent = professor.pessoa.especialidade;
-    document.getElementById("visualizarTitulacaoP").textContent = professor.pessoa.titulacao;
+    document.getElementById("visualizarNomeP").textContent = professor.nome;
+        document.getElementById("visualizarCpfP").textContent = professor.cpf;
+        document.getElementById("visualizarGeneroP").textContent = professor.genero;
+        document.getElementById("visualizarEmailP").textContent = professor.email;
+        document.getElementById("visualizarTelefoneP").textContent = professor.telefone;
+        document.getElementById("visualizarDataNascimentoP").textContent = professor.dataNascimento;
+        document.getElementById("visualizarEspecializacaoP").textContent = professor.especialidade;
+        document.getElementById("visualizarTitulacaoP").textContent = professor.titulacao;
 
     const tbodyTurmas = document.getElementById("tabela-professores-turma");
     tbodyTurmas.innerHTML = "";
 
     professor.pessoa.turmas.forEach(turma => {
         tbodyTurmas.innerHTML += `
-            <tr>
-                <td>${turma.id}</td>
-                <td>${turma.nome} </td>
-                <td>${turma.disciplina}</td>
-                <td>${turma.disciplina.curso}</td>
-                <td>${turma.professor}</td>
-                <td>${turma.sala}</td>
-                <td>${turma.horario}</td>
-                <td>${turma.nvagas}</td>
-            </tr>
-        `;
+                    <tr>
+                        <td>${turma.id}</td>
+                        <td>${turma.nome || ''}</td>
+                        <td>${turma.disciplinaNome || ''}</td>
+                        <td>${turma.cursoNome || ''}</td>
+                        <td>${professor.nome || ''}</td>
+                        <td>${turma.sala || ''}</td>
+                        <td>${turma.horario || ''}</td>
+                        <td>${turma.nvagas || ''}</td>
+                    </tr>
+                `;
     });
 
     modal.style.display = "flex";
@@ -212,32 +212,15 @@ async function editarProfessor(id) {
 
     professorSelecionadoId = id;
 
-    document.getElementById("nomep").value =
-        professor.pessoa.nome;
-
-    document.getElementById("cpfp").value =
-        professor.pessoa.cpf;
-
-    document.getElementById("generoDropdown").value =
-        professor.pessoa.genero;
-
-    document.getElementById("emailp").value =
-        professor.pessoa.email;
-
-    document.getElementById("telefonep").value =
-        professor.pessoa.telefone;
-
-    document.getElementById("datanascimentop").value =
-        professor.pessoa.dataNascimento;
-
-    document.getElementById("especializacaop").value =
-        professor.especializacao;
-
-    document.getElementById("titulacaop").value =
-        professor.titulacao;
-
-    document.getElementById("departamentoProfDropdown").value =
-        professor.departamento.id;
+    document.getElementById("nomep").value = professor.nome || '';
+    document.getElementById("cpfp").value = professor.cpf || '';
+    document.getElementById("generoDropdown").value = professor.genero || '';
+    document.getElementById("emailp").value = professor.email || '';
+    document.getElementById("telefonep").value = professor.telefone || '';
+    document.getElementById("datanascimentop").value = professor.dataNascimento || '';
+    document.getElementById("especializacaop").value = professor.especialidade || '';
+    document.getElementById("titulacaop").value = professor.titulacao || '';
+    document.getElementById("departamentoProfDropdown").value = professor.departamentoId || '';
 
     modoEdicao = true;
 
