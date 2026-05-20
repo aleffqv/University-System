@@ -382,3 +382,36 @@ th:last-child {
 .botaoPosition {
   justify-content: center;
 }
+
+
+.btn-icone {
+    width: 80px;             
+    height: 25px;            
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    
+    
+    background-size: contain;   
+    background-repeat: no-repeat; 
+    background-position: center;  
+    
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.btn-icone:hover {
+    transform: scale(1.05);
+    opacity: 0.8;
+}
+
+.btn-editar {
+    background-image: url('../icons/btn-editar.png');
+}
+
+.btn-visualizar {
+    background-image: url('../caminho/para/seu/icone-visualizar.png');
+}
+
+.btn-excluir {
+    background-image: url('../caminho/para/seu/icone-excluir.png');
+}

@@ -204,17 +204,5 @@ async function visualizarCurso(id) {
 }
 
 
-function getNomeDepartamento(id) {
-    const departamentos = JSON.parse(localStorage.getItem("departamentos")) || [];
-    const dep = departamentos.find(d => d.id == id);
-    return dep ? dep.nome : "Departamento não encontrado";
-}
-
-function getNomeCurso(id){
-    const cursos = JSON.parse(localStorage.getItem("cursos")) || [];
-    const curso = cursos.find(c => c.id == id);
-    return curso ? curso.nomec: "Nenhum curso encontrado"
-
-}
 
 renderizarTabela();

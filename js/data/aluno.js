@@ -68,13 +68,14 @@ async function renderizarTabela() {
                 <td>${aluno.pessoa.genero}</td>
                 <td>${aluno.pessoa.status}</td>
                 <td>
-                    <button onclick="editarAluno(${aluno.id})" class="btn-editar" data-id="${aluno.id}">Editar</button>
-                    <button onclick="visualizarAluno(${aluno.id})" class="btn-visualizar" data-id="${aluno.id}">Visualizar</button>
+                    <button onclick="editarAluno(${aluno.id})" class="btn-icone btn-editar" title="Editar"></button>
+                    <button onclick="visualizarAluno(${aluno.id})" class="btn-visualizar" data-id="${aluno.id}"></button>
                 </td>
             </tr>
         `;
     });
 }
+
 
 function limparFormulario() {
     document.getElementById("nome").value = "";
