@@ -71,8 +71,8 @@ async function renderizarTabela() {
                 <td>${disciplina.cargaHoraria}</td>
                 <td>${disciplina.periodo}</td>
                 <td>
-                    <button onclick="editarDisciplina(${disciplina.id})" class="btn-editar" data-id="${disciplina.id}">Editar</button>
-                    <button onclick="visualizarDisciplina(${disciplina.id})" class="btn-visualizar" data-id="${disciplina.id}">Visualizar</button>
+                    <button onclick="editarDisciplina(${disciplina.id})" class="btn-icone btn-editar" title="Editar"></button>
+                    <button onclick="visualizarDisciplina(${disciplina.id})" class="btn-icone btn-visualizar" title="Visualizar"></button>
                 </td>
             </tr>
         `;
@@ -86,7 +86,6 @@ function limparFormulario(){
     document.getElementById("turnoDropdown").value = "";
     document.getElementById("periodod").value = "";
 }
-
 
 function fecharModal() {
     document.getElementById("modal-disciplina").style.display = "none";

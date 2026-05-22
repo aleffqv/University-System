@@ -56,6 +56,8 @@ async function renderizarTabela() {
     const alunos = await response.json();
 
     const tbody = document.getElementById("tabela-alunos-body");
+
+    //if (!tbody) return;
     
     tbody.innerHTML = "";
 
@@ -69,7 +71,7 @@ async function renderizarTabela() {
                 <td>${aluno.pessoa.status}</td>
                 <td>
                     <button onclick="editarAluno(${aluno.id})" class="btn-icone btn-editar" title="Editar"></button>
-                    <button onclick="visualizarAluno(${aluno.id})" class="btn-visualizar" data-id="${aluno.id}"></button>
+                    <button onclick="visualizarAluno(${aluno.id})" class="btn-icone btn-visualizar" data-id="${aluno.id}"></button>
                 </td>
             </tr>
         `;

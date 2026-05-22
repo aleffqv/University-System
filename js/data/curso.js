@@ -2,7 +2,7 @@ const API = "http://localhost:8080/cursos";
 const API_DEP = "http://localhost:8080/departamentos";
 
 let modoEdicao = false;
-let cursoSelecionadoId = null;
+let cursoSelecionadoId;
 
 
 async function salvarCurso(){
@@ -11,7 +11,7 @@ async function salvarCurso(){
             nome: document.getElementById("nomec").value,
             departamentoId: document.getElementById("departamentoModalDropdown").value,
             cargaHoraria: document.getElementById("cargaHorariac").value,
-            turno: document.getElementById("turnoDropdown").value,
+            turno: document.getElementById("turnoDropdown").value || null,
             periodos: document.getElementById("periodosc").value,
             status: "ATIVO"
         }
@@ -68,8 +68,8 @@ async function renderizarTabela() {
                 <td>${curso.turno}</td>
                 <td>${curso.cargaHoraria}</td>
                 <td>
-                    <button onclick="editarCurso(${curso.id})" class="btn-editar" data-id="${curso.id}">Editar</button>
-                    <button onclick="visualizarCurso(${curso.id})" class="btn-visualizar" data-id="${curso.id}">Visualizar</button>
+                    <button onclick="editarCurso(${curso.id})" class="btn-icone btn-editar" title="Editar"></button>
+                    <button onclick="visualizarCurso(${curso.id})" class="btn-icone btn-visualizar" title="Visualizar"></button>
                 </td>
             </tr>
         `;
@@ -122,11 +122,12 @@ async function editarCurso(id) {
 
     cursoSelecionadoId = id;
 
+    carregarDepartamentosDropdown("departamentoModalDropdown");
 
     document.getElementById("nomec").value = curso.nome;
-    document.getElementById("departamentoModalDropdown").value = curso.departamento.nome;
+    document.getElementById("departamentoModalDropdown").value = curso.departamento.id;
     document.getElementById("cargaHorariac").value = curso.cargaHoraria;
-    document.getElementById("turnoDropdown").value = curso.turno;
+    document.getElementById("turnoDropdown").value = curso.turno || null;
     document.getElementById("periodosc").value = curso.periodos;
 
     modoEdicao = true;
@@ -134,7 +135,7 @@ async function editarCurso(id) {
     document.getElementById("btnSalvarCurso").textContent = "Salvar";
     document.getElementById("modal-curso").style.display = "flex";
 
-    
+
 }
 
 async function excluirCurso(id) {

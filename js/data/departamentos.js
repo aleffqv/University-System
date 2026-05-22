@@ -61,8 +61,8 @@ async function renderizarTabela() {
                 <td>${departamento.id}</td>
                 <td>${departamento.nome}</td>
                 <td>
-                    <button onclick="editarDepartamento(${departamento.id})" class="btn-editar" data-id="${departamento.id}">Editar</button>
-                    <button onclick="visualizarDepartamento(${departamento.id})" class="btn-visualizar" data-id="${departamento.id}">Visualizar</button>
+                    <button onclick="editarDepartamento(${departamento.id})" class="btn-icone btn-editar" title="Editar"></button>
+                    <button onclick="visualizarDepartamento(${departamento.id})" class="btn-icone btn-visualizar" title="Visualizar"></button>
                 </td>
             </tr>  
         `;

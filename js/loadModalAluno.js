@@ -7,20 +7,28 @@ fetch("../components/modal-aluno.html")
 })
 
 
+
 function iniciarModalAluno() { 
     const modal = document.getElementById("modal-aluno");
     const btnAbrir = document.querySelector(".bt-cad");
     const btnFechar = document.getElementById("fecharModal");
 
-    if (!modal || !btnAbrir || !btnFechar) return;
+    const btnAbrirAlunos = document.querySelector(".bt-cad");
+    const btnAbrirHome = document.querySelector(".newaluno");
 
-    btnAbrir.addEventListener("click", () => {
-        modal.style.display = "flex";
-    })
+    if (!modal || !btnFechar) return;
 
-    btnFechar.addEventListener("click", () => {
-        modal.style.display = "none";
-    })
+    // Se achou o botão de Alunos, liga ele
+    if (btnAbrirAlunos) {
+        btnAbrirAlunos.addEventListener("click", () => modal.style.display = "flex");
+    }
+
+    // Se achou o card da Home, liga ele também!
+    if (btnAbrirHome) {
+        btnAbrirHome.addEventListener("click", () => modal.style.display = "flex");
+    }
+
+    btnFechar.addEventListener("click", () => modal.style.display = "none");
 
     window.addEventListener("click", (e) =>{
         if (e.target === modal) {
@@ -34,4 +42,11 @@ function iniciarModalAluno() {
         }
 
     })    
+
+    document.addEventListener("click", function (e) {
+    if (e.target && e.target.id === "btnSalvarAluno") {
+        salvarAluno();
+    }
+    });
+
 }    

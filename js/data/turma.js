@@ -86,14 +86,8 @@ async function renderizarTabelaTurmas() {
                 <td>${turma.nvagas}</td>
 
                 <td>
-                    <button onclick="editarTurma(${turma.id})"
-                        class="btn-editar">
-                        Editar
-                    </button>
-
-                    <button onclick="visualizarTurma(${turma.id})"
-                        class="btn-visualizar">
-                        Visualizar
+                    <button onclick="editarTurma(${turma.id})" class="btn-icone btn-editar" title="Editar"></button>
+                    <button onclick="visualizarTurma(${turma.id})" class="btn-icone btn-visualizar" title="Visualizar"></button>
                     </button>
                 </td>
             </tr>

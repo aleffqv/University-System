@@ -64,8 +64,8 @@ async function renderizarTabelaMatriculas() {
                 <td>${matricula.turma.disciplina.curso.nome}</td>
                 <td>${matricula.dataMatricula}</td>
                 <td>
-                    <button onclick="editarMatricula(${matricula.id})"class="btn-editar">Editar</button>
-                    <button onclick="visualizarMatricula(${matricula.id})"class="btn-visualizar">Visualizar</button>
+                    <button onclick="editarMatricula(${matricula.id})" class="btn-icone btn-editar" title="Editar"></button>
+                    <button onclick="visualizarMatricula(${matricula.id})" class="btn-icone btn-visualizar" title="Visualizar"></button>
                 </td>
             </tr>
         `;

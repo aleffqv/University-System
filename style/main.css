@@ -147,15 +147,62 @@ th {
 
 .action {
   background: #f4f6f9;
+  border: 1px solid #ddd;
   padding: 15px;
   border-radius: 10px;
   text-align: center;
   cursor: pointer;
+  font-weight: bold;
+
+  transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
+.action:hover {
+  transform: scale(1.05);
+  opacity: 0.9;
+}
+
+
 .action img {
-  width: 30px;
+  width: 60px;
   margin-bottom: 5px;
+  margin-top: 5px;
+}
+
+.newaluno img{
+  width: 70px;
+  margin-bottom: 5px;
+  margin-top: 20px;
+}
+
+.newprof img{
+  width: 80px;
+  margin-bottom: 5px;
+  margin-top: 5px;
+}
+
+.newcurso img{
+  width: 80px;
+  margin-bottom: 5px;
+  margin-top: 25px;
+}
+
+.newturma img{
+  width: 60px;
+  margin-bottom: 5px;
+  margin-top: 20px;
+}
+
+.newdisc img{
+  width: 50px;
+  margin-bottom: 5px;
+  margin-top: 20px;
+}
+
+.newmatr img{
+  width: 50px;
+  margin-bottom: 5px;
+  margin-top: 25px;
 }
 
 .dropdown {
@@ -256,11 +303,14 @@ th {
     border-radius: 10px;
     cursor: pointer;
     font-weight: bold;
+
+    transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
 .bt-cad:hover {
     background: #1e90ff;
-    
+    transform: scale(1.05);
+    opacity: 0.8;
 }
 
 
@@ -385,14 +435,11 @@ th:last-child {
 
 
 .btn-icone {
-    width: 80px;             
-    height: 25px;            
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
+    background-color: transparent; 
+    border: none !important;            
+    cursor: pointer;         
     
-    
-    background-size: contain;   
+    background-size: contain;     
     background-repeat: no-repeat; 
     background-position: center;  
     
@@ -405,13 +452,21 @@ th:last-child {
 }
 
 .btn-editar {
+    width: 80px;  
+    height: 25px; 
     background-image: url('../icons/btn-editar.png');
 }
 
 .btn-visualizar {
-    background-image: url('../caminho/para/seu/icone-visualizar.png');
+    border: none;
+    cursor: pointer;
+    width: 35px;  
+    height: 25px;
+    background-image: url('../icons/btn-visualizar.png');
 }
 
 .btn-excluir {
-    background-image: url('../caminho/para/seu/icone-excluir.png');
+    width: 80px;  
+    height: 25px;
+    background-image: url('../icons/btn-excluir.png');
 }

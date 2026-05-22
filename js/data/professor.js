@@ -87,8 +87,8 @@ async function renderizarTabela() {
                 <td>${professor.pessoa.genero}</td>
                 <td>${professor.pessoa.status}</td>
                 <td>
-                    <button onclick="editarProfessor(${professor.id})" class="btn-editar">Editar</button>
-                    <button onclick="visualizarProfessor(${professor.id})" class="btn-visualizar">Visualizar</button>
+                    <button onclick="editarProfessor(${professor.id})" class="btn-icone btn-editar" title="Editar"></button>
+                    <button onclick="visualizarProfessor(${professor.id})" class="btn-icone btn-visualizar" title="Visualizar"></button>
                 </td>
             </tr>
         `;
@@ -222,7 +222,7 @@ async function editarProfessor(id) {
     document.getElementById("datanascimentop").value = professor.pessoa.dataNascimento || '';
     document.getElementById("especializacaop").value = professor.especialidade || '';
     document.getElementById("titulacaop").value = professor.titulacao || '';
-    document.getElementById("departamentoProfDropdown").value = professor.departamento || '';
+    document.getElementById("departamentoProfDropdown").value = professor.departamento;
 
     modoEdicao = true;
 
