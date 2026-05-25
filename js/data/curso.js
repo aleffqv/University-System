@@ -194,7 +194,6 @@ async function visualizarCurso(id) {
             <tr>
                 <td>${d.id}</td>
                 <td>${d.nome}</td>
-                <td>-- </td> <!-- professor -->
                 <td>${d.periodo}</td>
                 <td>${d.cargaHoraria}</td>
             </tr>
